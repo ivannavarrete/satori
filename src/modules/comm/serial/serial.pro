@@ -8,18 +8,27 @@ SOURCE_ROOT = ../../..
 INCLUDEPATH += $${SOURCE_ROOT}
 
 
+# Comm independent UI classes
+HEADERS += $${SOURCE_ROOT}/satori/ui/txt/txtuiinterface.h \
+
 # Serial communication text UI
-HEADERS += $${SOURCE_ROOT}/ui/txt/txtuiinterface.h \
-           txt/serialtxtui.h \
+HEADERS += txt/serialtxtui.h \
            txt/serialcommandtable.h
 
 SOURCES += txt/serialtxtui.cpp \
            txt/serialcommandtable.cpp
 
 
-HEADERS += serial_u.h
+# Serial device classes
+win32 {
+	HEADERS += serial_w.h
+	SOURCES += serial_w.cpp
+}
 
-SOURCES += serial_u.cpp
+unix {
+	HEADERS += serial_u.h
+	SOURCES += serial_u.cpp
+}
 
 
 # Command classes

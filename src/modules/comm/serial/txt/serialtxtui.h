@@ -7,7 +7,7 @@
 #include <QObject>
 #include <boost/shared_ptr.hpp>
 #include "serialcommandtable.h"
-#include "ui/txt/txtuiinterface.h"
+#include "satori/ui/txt/txtuiinterface.h"
 #include "lib/command/command.h"
 #include "modules/comm/commprovider.h"
 #include "serial_u.h"

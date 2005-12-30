@@ -9,6 +9,7 @@
  *
  */
 QxMemory::QxMemory(boost::shared_ptr<Memory> memory, QWidget *parent) : QWidget(parent) {
+	/*
 	// create popup menu
 	popup_menu = new QMenu(this);
 	QAction *action;
@@ -26,6 +27,7 @@ QxMemory::QxMemory(boost::shared_ptr<Memory> memory, QWidget *parent) : QWidget(
 	action = new QAction("Find", popup_menu);
 	connect(action, SIGNAL(triggered()), this, SLOT(Find()));
 	popup_menu->addAction(action);
+	*/
 	
 	// grab memory object
 	this->memory = memory;
@@ -38,6 +40,8 @@ QxMemory::QxMemory(boost::shared_ptr<Memory> memory, QWidget *parent) : QWidget(
 	select_color.setRgb(40, 40, 140);
 
 	// determine window metrics
+	mm = boost::shared_ptr<QxMemoryMetrics>(new QxMemoryMetrics(fontMetrics()));
+
 	QFontMetrics font_metrics = fontMetrics();
 	char_width = font_metrics.maxWidth();
 	char_height = font_metrics.height();
@@ -59,7 +63,7 @@ QxMemory::QxMemory(boost::shared_ptr<Memory> memory, QWidget *parent) : QWidget(
 	memcpy(data+18, "hello world", 12);
 
 	// deselect cells
-	sub_window = None;
+	sub_window = QxMemoryMetrics::NoWindow;
 	cell_row = -1;
 	cell_col = -1;
 
@@ -110,8 +114,7 @@ void QxMemory::paintEvent(QPaintEvent * event) {
 	for (unsigned int row=0; row<=(a/16); ++row){
 		// draw address
 		str = QString("%1").arg(addr+row*0x10, 4, 16, QLatin1Char('0'));
-		painter.drawText(mm->AddrRect(row), str);
-		//painter.drawText(h_indent, v_indent+row*cell_height, str);
+		painter.drawText(mm->AddrCell(row), str);
 
 		for (unsigned int col=0; col<16; ++col) {
 			unsigned char c = data[row*16 + col];
@@ -128,15 +131,11 @@ void QxMemory::paintEvent(QPaintEvent * event) {
 				
 			// draw hex data
 			str = QString("%1").arg(c, 2, 16, QLatin1Char('0'));
-			painter.drawText(mm->HexRect(row, col), str);
-			//painter.drawText(hex_indent + col*hex_cell_width +
-			//	((col>7)?hex_mid_space:0), v_indent + row*cell_height, str);
+			painter.drawText(mm->HexCell(row, col), str);
 
 			// draw ascii data
 			str = QString("%1").arg((char)(QChar(c).isPrint() ? c : '.'));
-			painter.drawText(mm->AsciiRect(row, col), str);
-			//painter.drawText(ascii_indent+col*ascii_cell_width,
-			//					v_indent+row*cell_height, str);
+			painter.drawText(mm->AsciiCell(row, col), str);
 		
 			if (c != cached_data[row*16 + col])
 				painter.restore();
@@ -144,21 +143,14 @@ void QxMemory::paintEvent(QPaintEvent * event) {
 	}
 
 	// draw selected hex cell
-	if (sub_window == HexWindow) {
-		int x = hex_indent + cell_col * hex_cell_width +
-						((cell_col>7) ? hex_mid_space : 0);
-		int y = v_indent + (cell_row  * cell_height) - cell_height;
-	
+	if (sub_window == QxMemoryMetrics::HexWindow) {
 		painter.setBackground(QBrush(select_color));
-		painter.drawRoundRect(x, y, char_width*2, cell_height, 45, 45);
+		painter.drawRoundRect(mm->HexCell(cell_row, cell_col), 45, 45);
 	
 	// draw selected ascii cell
-	} else if (sub_window == AsciiWindow) {
-		int x = ascii_indent + cell_col * ascii_cell_width;
-		int y = v_indent + (cell_row * cell_height) - cell_height;
-
+	} else if (sub_window == QxMemoryMetrics::AsciiWindow) {
 		painter.setBackground(QBrush(select_color));
-		painter.drawRoundRect(x, y, char_width, cell_height, 45, 45);
+		painter.drawRoundRect(mm->AsciiCell(cell_row, cell_col), 45, 45);
 	}
 }
 
@@ -166,6 +158,10 @@ void QxMemory::paintEvent(QPaintEvent * event) {
 void QxMemory::mousePressEvent(QMouseEvent *event) {
 	// calculate row and column of the cell that received a click (if any)
 	if (event->button() == Qt::LeftButton) {
+		sub_window = mm->CellIndex(event->x(), event->y(), cell_row, cell_col);
+		modifying_cell = false;
+
+		/*
 		int x = event->x();
 		int y = event->y();
 
@@ -187,6 +183,7 @@ void QxMemory::mousePressEvent(QMouseEvent *event) {
 			sub_window = AsciiWindow;
 			modifying_cell = false;
 		}
+		*/
 
 	// display popup menu
 	} else if (event->button() == Qt::RightButton) {
@@ -209,10 +206,10 @@ void QxMemory::mousePressEvent(QMouseEvent *event) {
 void QxMemory::keyPressEvent(QKeyEvent *event) {
 	// tab key switches between hex and ascii subwindows
 	if (event->key() == Qt::Key_Tab) {
-		if (sub_window == HexWindow)
-			sub_window = AsciiWindow;
-		else if (sub_window == AsciiWindow)
-			sub_window = HexWindow;
+		if (sub_window == QxMemoryMetrics::HexWindow)
+			sub_window = QxMemoryMetrics::AsciiWindow;
+		else if (sub_window == QxMemoryMetrics::AsciiWindow)
+			sub_window = QxMemoryMetrics::HexWindow;
 
 		modifying_cell = false;
 
@@ -233,7 +230,7 @@ void QxMemory::keyPressEvent(QKeyEvent *event) {
 		bool ok = false;
 
 		// write in hex cell (characters [0-9,a-f,A-F])
-		if (sub_window == HexWindow) {
+		if (sub_window == QxMemoryMetrics::HexWindow) {
 			char d = data[cell_row*16 + cell_col];
 			c = event->text().toInt(&ok, 16);
 			if (ok) {
@@ -247,7 +244,7 @@ void QxMemory::keyPressEvent(QKeyEvent *event) {
 			}
 
 		// write printable characters in ascii cell
-		} else if (sub_window == AsciiWindow) {
+		} else if (sub_window == QxMemoryMetrics::AsciiWindow) {
 			c = event->text().at(0).cell();
 			if (QChar(c).isPrint()) {
 				ok = true;

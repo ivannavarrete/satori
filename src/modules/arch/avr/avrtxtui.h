@@ -9,10 +9,10 @@
 #include <boost/scoped_ptr.hpp>
 #include "avrcommandtable.h"
 #include "lib/command/command.h"
-#include "ui/txt/txtuiinterface.h"
-#include "ui/txt/memorytxtwindow.h"
+#include "satori/ui/txt/txtuiinterface.h"
+#include "satori/ui/txt/memorytxtwindow.h"
+#include "satori/commandengine.h"
 #include "modules/comm/commuser.h"
-#include "commandengine.h"
 
 
 class AVRTxtUI : public QObject, public TxtUIInterface, public CommUser {

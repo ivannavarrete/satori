@@ -1,6 +1,6 @@
 
 #ifndef MEMORYQTWINDOW_H
-#define MEMORYQTWIBDOW_H
+#define MEMORYQTWINDOW_H
 
 
 #include <QWidget>
@@ -11,12 +11,11 @@
 #include <QColor>
 #include <boost/shared_ptr.hpp>
 #include "qxmemorymetrics.h"
-#include "memory.h"
+#include "satori/memory.h"
 
 
 #include <QAction>
 #include <QMenu>
-
 
 
 class QxMemory : public QWidget {
@@ -67,8 +66,7 @@ private:
 	unsigned char cached_data[data_buf_size];
 
 	/// subwindow type and coordinates for selected cell
-	enum SubWindow { None, HexWindow, AsciiWindow };
-	SubWindow sub_window;
+	QxMemoryMetrics::SubWindow sub_window;
 	int cell_row;
 	int cell_col;
 

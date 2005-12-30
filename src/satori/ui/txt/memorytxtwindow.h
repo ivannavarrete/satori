@@ -5,7 +5,7 @@
 
 #include <inttypes.h>
 #include <boost/shared_ptr.hpp>
-#include "memory.h"
+#include "satori/memory.h"
 
 
 class MemoryTxtWindow {

@@ -18,7 +18,7 @@
 #include "widgets/qxmemory.h"
 #include "../../memory.h"
 #include "../../commandengine.h"
-#include "../../modules/comm/commprovider.h"
+#include "../../../modules/comm/commprovider.h"
 
 #include "qxstyle.h"
 
@@ -59,8 +59,12 @@ int main(int argc, char *argv[]) {
 	QApplication::processEvents();
 
 
-	QPluginLoader loader("../../modules/comm/serial/libserial.so");
+	QPluginLoader loader("../../../modules/comm/serial/libserial.so");
 	QObject *module = loader.instance();
+	if (!module) {
+		qDebug("no serial module or is not a comm provider");
+		return -1;
+	}
 	CommProvider *comm_provider = qobject_cast<CommProvider *>(module);
 	
 	boost::shared_ptr<CommandEngine> command_engine(new CommandEngine);

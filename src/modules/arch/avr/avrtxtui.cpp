@@ -154,7 +154,7 @@ void AVRTxtUI::CommandSetMemory(const Command &command) {
  *
  */
 void AVRTxtUI::CommandGetState(const Command &command) {
-
+	command.IsValid(0);			// to remove 'unused var' warning
 }
 
 
@@ -162,7 +162,7 @@ void AVRTxtUI::CommandGetState(const Command &command) {
  *
  */
 void AVRTxtUI::CommandSetState(const Command &command) {
-
+	command.IsValid(0);			// to remove 'unused var' warning
 }
 
 

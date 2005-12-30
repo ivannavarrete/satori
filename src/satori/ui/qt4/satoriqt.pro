@@ -3,25 +3,27 @@ TEMPLATE = app
 CONFIG += qt warn_on release
 
 DEPENDPATH += .
-SOURCE_ROOT = ../..
-INCLUDEPATH += $${SOURCE_ROOT}
+SOURCEROOT = ../../..
+INCLUDEPATH += $${SOURCEROOT}
 
 # Input
 HEADERS += widgets/widgetgallery.h \
            widgets/qxmemory.h \
+           widgets/qxmemorymetrics.h \
            qxstyle.h
 
 SOURCES += main.cpp \
            widgets/widgetgallery.cpp \
            widgets/qxmemory.cpp \
+           widgets/qxmemorymetrics.cpp \
 		   qxstyle.cpp
 
 
 # testing
-HEADERS += $${SOURCE_ROOT}/memory.h \
-           $${SOURCE_ROOT}/commandengine.h \
-		   $${SOURCE_ROOT}/packet.h
+HEADERS += $${SOURCEROOT}/satori/memory.h \
+           $${SOURCEROOT}/satori/commandengine.h \
+		   $${SOURCEROOT}/satori/packet.h
 
-SOURCES += $${SOURCE_ROOT}/memory.cpp \
-           $${SOURCE_ROOT}/commandengine.cpp \
-		   $${SOURCE_ROOT}/packet.cpp
+SOURCES += $${SOURCEROOT}/satori/memory.cpp \
+           $${SOURCEROOT}/satori/commandengine.cpp \
+		   $${SOURCEROOT}/satori/packet.cpp

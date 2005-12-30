@@ -9,8 +9,7 @@ INCLUDEPATH += $${SOURCE_ROOT}
 
 
 # AVR architecture text UI
-HEADERS += $${SOURCE_ROOT}/ui/txt/txtuiinterface.h \
-           avrtxtui.h \
+HEADERS += avrtxtui.h \
            avrcommandtable.h
 
 SOURCES += avrtxtui.cpp \
@@ -18,19 +17,20 @@ SOURCES += avrtxtui.cpp \
 
 
 # Architecture-independent UI classes
-HEADERS += $${SOURCE_ROOT}/ui/txt/memorytxtwindow.h
+HEADERS += $${SOURCE_ROOT}/satori/ui/txt/txtuiinterface.h \
+           $${SOURCE_ROOT}/satori/ui/txt/memorytxtwindow.h
 
-SOURCES += $${SOURCE_ROOT}/ui/txt/memorytxtwindow.cpp
+SOURCES += $${SOURCE_ROOT}/satori/ui/txt/memorytxtwindow.cpp
 
 
 # Architecture-independent device classes
-HEADERS += $${SOURCE_ROOT}/memory.h \
-           $${SOURCE_ROOT}/commandengine.h \
-		   $${SOURCE_ROOT}/packet.h
+HEADERS += $${SOURCE_ROOT}/satori/memory.h \
+           $${SOURCE_ROOT}/satori/commandengine.h \
+		   $${SOURCE_ROOT}/satori/packet.h
 
-SOURCES += $${SOURCE_ROOT}/memory.cpp \
-           $${SOURCE_ROOT}/commandengine.cpp \
-		   $${SOURCE_ROOT}/packet.cpp
+SOURCES += $${SOURCE_ROOT}/satori/memory.cpp \
+           $${SOURCE_ROOT}/satori/commandengine.cpp \
+		   $${SOURCE_ROOT}/satori/packet.cpp
 
 
 # Command classes

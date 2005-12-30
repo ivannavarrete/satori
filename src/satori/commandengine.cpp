@@ -22,7 +22,7 @@ void CommandEngine::SetComm(boost::shared_ptr<Comm> comm) {
  * @param data					buffer where to store read data
  * @param dsize					size of buffer
  *
- * @throws std::runtime_error	Thrown if there was an error reading from  or
+ * @throws std::runtime_error	Thrown if there was an error reading from or
  * 								writing to comm device.
  */
 void CommandEngine::ReadMemory(Memory::Type mtype, uint32_t addr, char *data, uint32_t dsize) {

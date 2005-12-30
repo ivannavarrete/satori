@@ -126,7 +126,8 @@ void BaseTxtUI::CommandQuit() const {
  * @todo Implement.
  */
 void BaseTxtUI::CommandShowModule() const {
-	QDir module_dir = QDir(QCoreApplication::applicationDirPath() + "/modules");
+	QDir module_dir = QDir(QCoreApplication::applicationDirPath()+
+													"/../modules");
 	if (!module_dir.exists()) {
 		std::cout << "] can't find module directory\n";
 		return;
@@ -186,7 +187,8 @@ void BaseTxtUI::CommandLoadModule(const Command &command) {
 
 	// try loading an architecture module
 	QDir modules_dir;
-	modules_dir.setPath(QCoreApplication::applicationDirPath()+"/modules/arch");
+	modules_dir.setPath(QCoreApplication::applicationDirPath()+
+											"/../modules/arch");
 	if (!modules_dir.exists()) {
 		std::cout << "] can't find module directory\n";
 		return;
@@ -233,7 +235,8 @@ void BaseTxtUI::CommandLoadModule(const Command &command) {
 
 
 	// try loading a communication module
-	modules_dir.setPath(QCoreApplication::applicationDirPath()+"/modules/comm");
+	modules_dir.setPath(QCoreApplication::applicationDirPath()+
+											"/../modules/comm");
 	if (!modules_dir.exists()) {
 		std::cout << "] can't find module directory\n";
 		return;

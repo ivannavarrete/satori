@@ -4,9 +4,6 @@
 #include "commandengine.h"
 
 
-#include <iostream>		// @todo Remove.
-
-
 /**
  * Create a memory object of a certain type.
  * 
