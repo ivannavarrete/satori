@@ -3,9 +3,10 @@ TEMPLATE = lib
 CONFIG += qt plugin warn_on release
 QT -= gui
 
+DESTDIR = ../../../../release/modules/arch/avr
 
-SOURCE_ROOT = ../../..
-INCLUDEPATH += $${SOURCE_ROOT}
+SOURCEROOT = ../../..
+INCLUDEPATH += $${SOURCEROOT}
 
 
 # AVR architecture text UI
@@ -17,34 +18,34 @@ SOURCES += avrtxtui.cpp \
 
 
 # Architecture-independent UI classes
-HEADERS += $${SOURCE_ROOT}/satori/ui/txt/txtuiinterface.h \
-           $${SOURCE_ROOT}/satori/ui/txt/memorytxtwindow.h
+HEADERS += $${SOURCEROOT}/satori/ui/txt/txtuiinterface.h \
+           $${SOURCEROOT}/satori/ui/txt/memorytxtwindow.h
 
-SOURCES += $${SOURCE_ROOT}/satori/ui/txt/memorytxtwindow.cpp
+SOURCES += $${SOURCEROOT}/satori/ui/txt/memorytxtwindow.cpp
 
 
 # Architecture-independent device classes
-HEADERS += $${SOURCE_ROOT}/satori/memory.h \
-           $${SOURCE_ROOT}/satori/commandengine.h \
-		   $${SOURCE_ROOT}/satori/packet.h
+HEADERS += $${SOURCEROOT}/satori/memory.h \
+           $${SOURCEROOT}/satori/commandengine.h \
+		   $${SOURCEROOT}/satori/packet.h
 
-SOURCES += $${SOURCE_ROOT}/satori/memory.cpp \
-           $${SOURCE_ROOT}/satori/commandengine.cpp \
-		   $${SOURCE_ROOT}/satori/packet.cpp
+SOURCES += $${SOURCEROOT}/satori/memory.cpp \
+           $${SOURCEROOT}/satori/commandengine.cpp \
+		   $${SOURCEROOT}/satori/packet.cpp
 
 
 # Command classes
-HEADERS += $${SOURCE_ROOT}/lib/tree.h \
-           $${SOURCE_ROOT}/lib/command/commandtable.h \
-           $${SOURCE_ROOT}/lib/command/command.h \
-           $${SOURCE_ROOT}/lib/command/argument.h \
-           $${SOURCE_ROOT}/lib/command/wordargument.h \
-           $${SOURCE_ROOT}/lib/command/stringargument.h \
-           $${SOURCE_ROOT}/lib/command/numberargument.h
+HEADERS += $${SOURCEROOT}/lib/tree.h \
+           $${SOURCEROOT}/lib/command/commandtable.h \
+           $${SOURCEROOT}/lib/command/command.h \
+           $${SOURCEROOT}/lib/command/argument.h \
+           $${SOURCEROOT}/lib/command/wordargument.h \
+           $${SOURCEROOT}/lib/command/stringargument.h \
+           $${SOURCEROOT}/lib/command/numberargument.h
 
-SOURCES += $${SOURCE_ROOT}/lib/command/commandtable.cpp \
-           $${SOURCE_ROOT}/lib/command/command.cpp \
-           $${SOURCE_ROOT}/lib/command/argument.cpp \
-           $${SOURCE_ROOT}/lib/command/wordargument.cpp \
-           $${SOURCE_ROOT}/lib/command/stringargument.cpp \
-           $${SOURCE_ROOT}/lib/command/numberargument.cpp
+SOURCES += $${SOURCEROOT}/lib/command/commandtable.cpp \
+           $${SOURCEROOT}/lib/command/command.cpp \
+           $${SOURCEROOT}/lib/command/argument.cpp \
+           $${SOURCEROOT}/lib/command/wordargument.cpp \
+           $${SOURCEROOT}/lib/command/stringargument.cpp \
+           $${SOURCEROOT}/lib/command/numberargument.cpp

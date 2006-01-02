@@ -32,33 +32,15 @@ QxMemory::QxMemory(boost::shared_ptr<Memory> memory, QWidget *parent) : QWidget(
 	// grab memory object
 	this->memory = memory;
 
+	// determine window metrics
+	mm = boost::shared_ptr<QxMemoryMetrics>(new QxMemoryMetrics(fontMetrics()));
+
 	// set policy for keyboard focus
 	setFocusPolicy(Qt::ClickFocus);
 
 	// set widget colors
 	change_color.setRgb(255, 187, 62);
 	select_color.setRgb(40, 40, 140);
-
-	// determine window metrics
-	mm = boost::shared_ptr<QxMemoryMetrics>(new QxMemoryMetrics(fontMetrics()));
-
-	QFontMetrics font_metrics = fontMetrics();
-	char_width = font_metrics.maxWidth();
-	char_height = font_metrics.height();
-
-	v_indent = char_height;
-	h_indent = 6;
-
-	cell_height = char_height - 2;
-	addr_cell_width = static_cast<int>(char_width*4.5);
-	hex_cell_width = static_cast<int>(char_width*2.5);
-	ascii_cell_width = char_width;
-	
-	block_space = char_width;
-	hex_mid_space = static_cast<int>(hex_cell_width * 0.2);
-	hex_indent = h_indent + addr_cell_width + block_space;
-	ascii_indent = h_indent + addr_cell_width + hex_cell_width*16 +
-									hex_mid_space + block_space*2;
 
 	memcpy(data+18, "hello world", 12);
 
@@ -71,18 +53,17 @@ QxMemory::QxMemory(boost::shared_ptr<Memory> memory, QWidget *parent) : QWidget(
 	modifying_cell = false;
 
 	// set widget size
-	int window_width = h_indent*2 + addr_cell_width + hex_cell_width*16 +
-					   hex_mid_space + block_space*2 + ascii_cell_width*16;
-	setMinimumSize(window_width, 500);
-	setMaximumSize(window_width, 600);
+	//int window_width = h_indent*2 + addr_cell_width + hex_cell_width*16 +
+	//				   hex_mid_space + block_space*2 + ascii_cell_width*16;
+	//setMinimumSize(window_width, 500);
+	//setMaximumSize(window_width, 600);
+	setMinimumSize(500, 500);
+	setMaximumSize(500, 600);
 
 	window_start_addr = 0x0000;
-	window_end_addr = qMin(memory->End(), static_cast<uint32_t>
-					(16*((height()-h_indent*2)/cell_height))+16);
-
-	qDebug("%d %d %d %d", height(), height()-h_indent*2,
-	(height()-h_indent*2)/cell_height, 16*((height()-h_indent*2)/cell_height));
-	qDebug("%x %x", window_start_addr, window_end_addr);
+	//window_end_addr = qMin(memory->End(), static_cast<uint32_t>
+	//				(16*((height()-h_indent*2)/cell_height))+16);
+	window_end_addr = 0x0200;
 }
 
 
@@ -160,30 +141,6 @@ void QxMemory::mousePressEvent(QMouseEvent *event) {
 	if (event->button() == Qt::LeftButton) {
 		sub_window = mm->CellIndex(event->x(), event->y(), cell_row, cell_col);
 		modifying_cell = false;
-
-		/*
-		int x = event->x();
-		int y = event->y();
-
-		if (x > hex_indent && x < (ascii_indent - block_space)){
-			if (x - hex_indent > hex_cell_width*8)
-				x -= hex_mid_space;
-
-			cell_row = (y - v_indent + cell_height) / cell_height;
-			cell_col = (x - hex_indent) / hex_cell_width;
-			//qDebug("hex coord: (%x, %x)", cell_row, cell_col);
-
-			sub_window = HexWindow;
-			modifying_cell = false;
-		} else if (x > ascii_indent &&	x < ascii_indent + ascii_cell_width*16){
-			cell_row = (y - v_indent + cell_height) / cell_height;
-			cell_col = (x - ascii_indent) / ascii_cell_width;
-			//qDebug("asc coord: (%x, %x)", ascii_cell_row, ascii_cell_col);
-
-			sub_window = AsciiWindow;
-			modifying_cell = false;
-		}
-		*/
 
 	// display popup menu
 	} else if (event->button() == Qt::RightButton) {

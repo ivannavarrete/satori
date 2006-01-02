@@ -1,13 +1,18 @@
 
 TEMPLATE = app
 CONFIG += qt warn_on release
+QT -= gui
+
+DESTDIR = ../../release/bin
 
 SOURCEROOT = ..
 INCLUDEPATH += $${SOURCEROOT}
 
+
 HEADERS += $${SOURCEROOT}/lib/tree.h
 
 SOURCES += main.cpp
+
 
 # Architecture-independent text user interface
 HEADERS += ui/txt/txtuiinterface.h \

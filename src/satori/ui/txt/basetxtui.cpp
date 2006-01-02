@@ -1,5 +1,5 @@
 
-#include <QApplication>
+#include <QCoreApplication>
 #include <QDir>
 #include "basetxtui.h"
 
@@ -117,17 +117,15 @@ void BaseTxtUI::Exec(const Command &command) {
  * Cleanup method that's called when program terminates.
  */
 void BaseTxtUI::CommandQuit() const {
-	QApplication::exit(0);		// stop event processing
+	QCoreApplication::exit(0);		// stop event processing
 }
 
 
 /**
  *
- * @todo Implement.
  */
 void BaseTxtUI::CommandShowModule() const {
-	QDir module_dir = QDir(QCoreApplication::applicationDirPath()+
-													"/../modules");
+	QDir module_dir = QDir(QCoreApplication::applicationDirPath()+"/../modules");
 	if (!module_dir.exists()) {
 		std::cout << "] can't find module directory\n";
 		return;

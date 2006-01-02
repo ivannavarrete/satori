@@ -4,7 +4,6 @@
 
 
 #include <QFontMetrics>
-//#include "qxmemory.h"
 
 
 class QxMemoryMetrics {

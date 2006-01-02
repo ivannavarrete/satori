@@ -40,25 +40,11 @@ private slots:
 private:
 	void changeCellPos(int amount);
 
+	boost::shared_ptr<Memory> memory;
+	boost::shared_ptr<QxMemoryMetrics> mm;
+
 	// popup menu for this widget
 	QMenu *popup_menu;
-
-	// window, cell and font metrics
-	int char_width;
-	int char_height;
-	
-	int v_indent;
-	int h_indent;
-
-	int cell_height;
-	int addr_cell_width;
-	int hex_cell_width;
-	int ascii_cell_width;
-
-	int block_space;
-	int hex_mid_space;
-	int hex_indent;
-	int ascii_indent;
 
 	// data buffers
 	static const uint32_t data_buf_size = 0x400;
@@ -76,12 +62,8 @@ private:
 	QColor select_color;
 	QColor change_color;
 
-	boost::shared_ptr<Memory> memory;
-
 	unsigned int window_start_addr;
 	unsigned int window_end_addr;
-
-	boost::shared_ptr<QxMemoryMetrics> mm;
 };
 
 

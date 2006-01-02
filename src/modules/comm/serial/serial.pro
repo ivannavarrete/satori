@@ -3,13 +3,14 @@ TEMPLATE = lib
 CONFIG += qt plugin warn_on release
 QT -= gui
 
+DESTDIR = ../../../../release/modules/comm/serial
 
-SOURCE_ROOT = ../../..
-INCLUDEPATH += $${SOURCE_ROOT}
+SOURCEROOT = ../../..
+INCLUDEPATH += $${SOURCEROOT}
 
 
 # Comm independent UI classes
-HEADERS += $${SOURCE_ROOT}/satori/ui/txt/txtuiinterface.h \
+HEADERS += $${SOURCEROOT}/satori/ui/txt/txtuiinterface.h
 
 # Serial communication text UI
 HEADERS += txt/serialtxtui.h \
@@ -32,17 +33,17 @@ unix {
 
 
 # Command classes
-HEADERS += $${SOURCE_ROOT}/lib/tree.h \
-           $${SOURCE_ROOT}/lib/command/commandtable.h \
-           $${SOURCE_ROOT}/lib/command/command.h \
-           $${SOURCE_ROOT}/lib/command/argument.h \
-           $${SOURCE_ROOT}/lib/command/wordargument.h \
-           $${SOURCE_ROOT}/lib/command/stringargument.h \
-           $${SOURCE_ROOT}/lib/command/numberargument.h
+HEADERS += $${SOURCEROOT}/lib/tree.h \
+           $${SOURCEROOT}/lib/command/commandtable.h \
+           $${SOURCEROOT}/lib/command/command.h \
+           $${SOURCEROOT}/lib/command/argument.h \
+           $${SOURCEROOT}/lib/command/wordargument.h \
+           $${SOURCEROOT}/lib/command/stringargument.h \
+           $${SOURCEROOT}/lib/command/numberargument.h
 
-SOURCES += $${SOURCE_ROOT}/lib/command/commandtable.cpp \
-           $${SOURCE_ROOT}/lib/command/command.cpp \
-           $${SOURCE_ROOT}/lib/command/argument.cpp \
-           $${SOURCE_ROOT}/lib/command/wordargument.cpp \
-           $${SOURCE_ROOT}/lib/command/stringargument.cpp \
-           $${SOURCE_ROOT}/lib/command/numberargument.cpp
+SOURCES += $${SOURCEROOT}/lib/command/commandtable.cpp \
+           $${SOURCEROOT}/lib/command/command.cpp \
+           $${SOURCEROOT}/lib/command/argument.cpp \
+           $${SOURCEROOT}/lib/command/wordargument.cpp \
+           $${SOURCEROOT}/lib/command/stringargument.cpp \
+           $${SOURCEROOT}/lib/command/numberargument.cpp

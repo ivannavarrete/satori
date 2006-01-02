@@ -56,7 +56,12 @@ const QRect &QxMemoryMetrics::AsciiCell(int row, int col) {
 
 
 /**
+ * Given widget coordinates determine the cell subwindow, row and column.
  *
+ * @param x
+ * @param y
+ * @param row
+ * @param col
  */
 QxMemoryMetrics::SubWindow QxMemoryMetrics::CellIndex(int x, int y, int &row, int &col) const {
 	if (x > hex_indent && x < ascii_indent - block_space) {
@@ -76,21 +81,3 @@ QxMemoryMetrics::SubWindow QxMemoryMetrics::CellIndex(int x, int y, int &row, in
 
 	return NoWindow;
 }
-
-
-/*
-int QxMemoryMetrics::Row(int y) const {
-	return (y - v_indent) / cell_height;
-}
-
-
-int QxMemoryMetrics::Col(int x) const {
-	
-}
-
-
-SubWindow QxMemoryMetrics::SubWindow(int x) const {
-	if (x > hex_indent && x < (ascii_indent - block_space))
-		return HexWindow;
-}
-*/
