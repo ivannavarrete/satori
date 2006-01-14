@@ -1,14 +1,20 @@
 
+# Currently multiple source files is not supported.
+
 AS = avra
+LOADER = avrdude -p 8535 -c stk500 -U flash:w:
+RM = /bin/rm -f
 
 OBJFILES = monitor.hex
 
 
-first: all						# needed for qmake Makefiles
+first: all
 all: $(OBJFILES)
 
-monitor.hex: monitor.asm
-	@$(AS) monitor.asm
+%.hex: %.asm
+	$(AS) $<
+	$(LOADER)$@
 
-clean:
-	rm -rf *.hex *.obj *.cof
+clean: distclean
+distclean:
+	$(RM) *.hex *.obj *.cof

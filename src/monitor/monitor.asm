@@ -1,13 +1,13 @@
 
 
-.include "/usr/include/avr/device.inc"
+.include "device.inc"
 
 .equ DEVICE = AT908535
 .equ OSC = 8000000
 
 
 .include "/usr/include/avr/8535def2.inc"
-.include "/usr/include/avr/default.inc"
+.include "default.inc"
 
 
 ; Programmer commands. Must match those in commandengine.h
@@ -100,7 +100,14 @@ reset:
 
 	;sei
 
-	rjmp	DebugMain
+	ldi		r31, $55
+	mov		r0, r31
+	ldi		r31, $AA
+	mov		r2, r31
+	ldi		r31, $5A
+
+;	rjmp	DebugMain
+	rjmp	DebugEntryPoint
 
 
 ;===[ Main ]====================================================================
@@ -231,7 +238,7 @@ DebugExitPoint:
 
 
 ;===[ ReadMemory ]==============================================================
-; Send SRAM/EEPROM/FLASH data to PC.
+; Send SRAM/EEPROM/FLASH data to debugger.
 ;
 ; in:
 ;	packet_arg1		start address of data, 0-...
