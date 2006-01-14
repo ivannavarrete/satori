@@ -102,6 +102,21 @@ AVRCommandTable::AVRCommandTable() {
 	command_table.push_back(command);
 
 
+	// reg [reg_name]
+	// @todo implement proper argument type for variables (x=y)
+	command = boost::shared_ptr<Command>(new Command("reg", GetState,
+"]   reg [reg_name]                        display/set CPU state\n",
+"]   reg                                   display CPU state\n"
+"]   reg <reg_name> ???                    set register to value ???\n"));
+
+	argument_list.clear();
+	//argument_list.push_back(boost::shared_ptr<Argument>(new VariableArgument),
+	//    												Argument::Optional);
+
+	//command->AddArguments(argument_list);
+	command_table.push_back(command);
+
+
 	// help [command]
 	command = boost::shared_ptr<Command>(new Command("help", Help));
 	argument_list.clear();

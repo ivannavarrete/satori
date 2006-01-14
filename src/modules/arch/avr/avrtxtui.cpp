@@ -1,7 +1,7 @@
 
 #include <iostream>
 #include "avrtxtui.h"
-#include "memory.h"
+//#include "memory.h"
 
 
 /**
@@ -35,24 +35,37 @@ bool AVRTxtUI::Find(Command &command, const std::string &command_name) const {
  */
 void AVRTxtUI::Exec(const Command &command) {
 	switch (command.Type()) {
-	case (AVRCommandTable::GetDevice):
+	case AVRCommandTable::GetDevice:
 		CommandGetDevice();
 		break;
-	case (AVRCommandTable::SetDevice):
+
+	case AVRCommandTable::SetDevice:
 		CommandSetDevice(command);
 		break;
-	case (AVRCommandTable::GetSRAM):
+
+	case AVRCommandTable::GetSRAM:
 	case AVRCommandTable::GetEEPROM:
 	case AVRCommandTable::GetFLASH:
 		CommandGetMemory(command);
 		break;
+
 	case AVRCommandTable::SetSRAM:
 	case AVRCommandTable::SetEEPROM:
 		CommandSetMemory(command);
 		break;
+
+	case AVRCommandTable::GetState:
+		CommandGetState(command);
+		break;
+
+	case AVRCommandTable::SetState:
+		CommandSetState(command);
+		break;
+
 	case AVRCommandTable::Help:
 		CommandHelp(command);
 		break;
+
 	default:
 		// throw invalid_argument here
 		break;
@@ -69,9 +82,15 @@ void AVRTxtUI::CommandGetDevice() const {
 }
 
 
+
+/**
+ *
+ */
+#include <sstream>
 void AVRTxtUI::CommandSetDevice(const Command &command) {
 	std::cout << "SetDevice() [" << command.GetWord(1) << "]: hardcoded dev.\n";
 
+	// create memory objects and windows
 	boost::shared_ptr<Memory> memory;
 	uint32_t start_addr;
 	uint32_t end_addr;
@@ -93,6 +112,20 @@ void AVRTxtUI::CommandSetDevice(const Command &command) {
 	memory = boost::shared_ptr<Memory>(new Memory(Memory::FLASH, start_addr,
 												end_addr, command_engine));
 	flash = boost::shared_ptr<MemoryTxtWindow>(new MemoryTxtWindow(memory));
+
+	// create state object and window.. the order of creation of the state map
+	// is important and should mirror the state structure in monitor.asm
+	std::vector<StateEntry> state_map;
+	for (unsigned int i=0; i<32; i++) {
+		std::ostringstream reg_name;
+		reg_name << "r" << i;
+		state_map.push_back(StateEntry(reg_name.str(), 1));
+	}
+	state_map.push_back(StateEntry("PC", 2));
+	state_map.push_back(StateEntry("SP", 2));
+	state_map.push_back(StateEntry("SREG", 1));
+	boost::shared_ptr<State> s(new State(state_map, command_engine));
+	state = boost::shared_ptr<StateTxtWindow>(new StateTxtWindow(s));
 }
 
 
@@ -155,6 +188,8 @@ void AVRTxtUI::CommandSetMemory(const Command &command) {
  */
 void AVRTxtUI::CommandGetState(const Command &command) {
 	command.IsValid(0);			// to remove 'unused var' warning
+
+	state->GetState();
 }
 
 

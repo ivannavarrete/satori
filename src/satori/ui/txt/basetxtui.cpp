@@ -177,7 +177,11 @@ void BaseTxtUI::CommandShowModule() const {
 
 
 /**
+ * Load a communication or architecture module.
  *
+ * @param command				Command object holding module name
+ *
+ * @todo Find out exceptions thrown.
  */
 void BaseTxtUI::CommandLoadModule(const Command &command) {
 	const QString module_name(command.GetWord(1).c_str());
@@ -293,7 +297,7 @@ void BaseTxtUI::CommandClearScreen() const {
 /**
  * Display help.
  *
- * @param command				Command object holding optional command name.
+ * @param command				Command object holding optional command name
  */
 void BaseTxtUI::CommandHelp(const Command &command) const {
 	// display long help on specific command

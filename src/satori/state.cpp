@@ -1,92 +1,70 @@
 
-#include <sstream>
-#include <netinet/in.h>
+#include <stdexcept>
+#include <netinet/in.h>	/// @Todo Phase out this file since it's not portable.
 #include "state.h"
-#include "commandengine.h"
-
-
-extern CommandEngine *cmd;
 
 
 /**
- * Create state object.
+ * Create state object. Each architecture module should create a state object
+ * with a state map specific for that architecture and device. The entries in
+ * the state map must match the order and size of the state structure in the
+ * monitor.
+ *
+ * @param state_map				state map with proper state entries
+ * @param command_engine		command engine used to communicate with monitor
  */
-State::State() {
-	stringstream regname(stringstream::out);
+State::State(std::vector<StateEntry> &state_map, boost::shared_ptr<CommandEngine> command_engine) {
+	// calculate size of raw state and allocate buffer for it
+	raw_state_size = 0;
+	for (StateMap::iterator state_entry=state_map.begin();
+		 state_entry!=state_map.end(); ++state_entry)
+		raw_state_size += state_entry->size;
 
-	// insert register entries into state map
-	for (int i=0; i<num_regs; i++) {
-		regname << "r" << i;
-		state_map.push_back(*(new StateEntry(regname.str(), 0, 8)));
-	}
+	raw_state = boost::shared_array<char>(new char[raw_state_size]);
 
-	// insert pc, sp and sreg into state map
-	state_map.push_back(*(new StateEntry("pc", 16, 0)));
-	state_map.push_back(*(new StateEntry("sp", 16, 0)));
-	state_map.push_back(*(new StateEntry("sreg", 8, 0)));
+	// save command engine and copy state map to internal variables
+	this->state_map = state_map;
+	this->command_engine = command_engine;
 }
 
 
 /**
- * Destroy state object.
- */
-State::~State() {
-	for (unsigned int i=0; i<state_map.size(); i++)
-		delete &(state_map.at(i));
-}
-
-
-/**
- * Read state.
+ * Read state from monitor and return the updated state map.
  *
- * @param state_map_copy	copy of state map
- *
- * @return					dunno
+ * @return					reference to the updated state map
  */
-int State::Read(vector<StateEntry> *state_map_copy) {
-	// get state from target
-	/// @todo Handle error properly.
-	cmd->GetState(state.raw, state_size);
+const State::StateMap &State::Read() {
+	// get state from monitor
+	command_engine->GetState(raw_state.get(), raw_state_size);
 	
 	// update state map
-	unsigned int size = 1;
-	for (unsigned int i=0, j=0; i<state_map.size(); i++, j+=size) {
-		size = state_map.at(i).size;
-		if (size == 1) {
-			if (state_map.at(i).value == static_cast<uint32_t>(state.raw[j]))
-				state_map.at(i).updated = false;
-			else {
-				state_map.at(i).value = state.raw[j];
-				state_map.at(i).updated = true;
-			}
-		} else if (size == 2) {
-			uint16_t *valuep = reinterpret_cast<uint16_t *>(&state.raw[j]);
+	unsigned int raw_i = 0;
+	for (StateMap::iterator state_entry=state_map.begin();
+		 state_entry!=state_map.end(); ++state_entry){
+		uint32_t value = 0;
 
-			if (state_map.at(i).value == ntohs(*valuep))
-				state_map.at(i).updated = false;
-			else {
-				state_map.at(i).value = ntohs(*valuep);
-				state_map.at(i).updated = true;
-			}
-		} else if (size == 4) {
-			uint32_t *valuep = reinterpret_cast<uint32_t *>(&state.raw[j]);
+		// get value from raw state
+		if (state_entry->size == 1)
+			value = static_cast<uint8_t>(raw_state[raw_i]);
+		else if (state_entry->size == 2)
+			value = ntohs(*(reinterpret_cast<uint16_t *>(&raw_state[raw_i])));
+		else if (state_entry->size == 4)
+			value = ntohl(*(reinterpret_cast<uint32_t *>(&raw_state[raw_i])));
+		else
+			throw std::logic_error("wrong register size");
 
-			if (state_map.at(i).value == ntohl(*valuep))
-				state_map.at(i).updated = false;
-			else {
-				state_map.at(i).value = ntohl(*valuep);
-				state_map.at(i).updated = true;
-			}
+		raw_i += state_entry->size;
+
+		// update state entry
+		if (state_entry->value == value) {
+			state_entry->updated = false;
 		} else {
-			/// @todo Handle error properly.
-			return -1;			// should not happen!! throw ex instead
+			state_entry->value = value;
+			state_entry->updated = true;
 		}
 	}
 
-	// make copy of state map to return
-	
-	
-	return 0;
+	return state_map;
 }
 
 
@@ -94,10 +72,12 @@ int State::Read(vector<StateEntry> *state_map_copy) {
  * Write state entry.
  *
  * @param state_entry	dunno
- *
- * @return				dunno
  */
-int State::Write(const StateEntry *state_entry) {
+void State::Write(const StateEntry *state_entry) {
+	// temporatily remove 'unused parameter' warnings
+	if (state_entry->size == state_entry->size);
+
+	/*
 	unsigned int size = 1;
 	for (unsigned int i=0, j=0; i<state_map.size(); i++, j+=size) {
 		size = state_map.at(i).size;
@@ -125,4 +105,5 @@ int State::Write(const StateEntry *state_entry) {
 	/// @todo Handle error properly.
 	cmd->SetState(state.raw, state_size);
 	return 0;
+	*/
 }

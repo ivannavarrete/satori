@@ -74,7 +74,10 @@ void Packet::Send(boost::shared_ptr<Comm> comm) const {
  *
  * @throws std::runtime_error	Thrown if there was an error reading from dev.
  * @throws std::logic_error		Thrown if Receive() was called on a packet
- * 								created through the sending constructor.
+ * 								created through the sending constructor or
+ * 								if packet data size is wrong which indicates
+ * 								that sender or receiver is implementing the
+ * 								higher level protocol incorrectly.
  */
 void Packet::Receive(boost::shared_ptr<Comm> comm) {
 	if (type != ReceivePacket)
@@ -90,7 +93,7 @@ void Packet::Receive(boost::shared_ptr<Comm> comm) {
 
 	//uint16_t real_dsize = (uint16_t)std::min(dsize, (header.field.dsize));
 
-	// if header.field.dsize != dsize then there's probably a protocol error
+	// if dsize != header.field.dsize then there's probably a protocol error
 	if (dsize != header.field.dsize)
 		throw std::logic_error("protocol error: data size mismatch");
 

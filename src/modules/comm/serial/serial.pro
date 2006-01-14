@@ -1,6 +1,6 @@
 
 TEMPLATE = lib
-CONFIG += qt plugin warn_on release
+CONFIG += qt plugin warn_on
 QT -= gui
 
 DESTDIR = ../../../../release/modules/comm/serial

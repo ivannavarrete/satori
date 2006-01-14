@@ -9,12 +9,18 @@
 #include <boost/scoped_ptr.hpp>
 #include "avrcommandtable.h"
 #include "lib/command/command.h"
+#include "satori/commandengine.h"
 #include "satori/ui/txt/txtuiinterface.h"
 #include "satori/ui/txt/memorytxtwindow.h"
-#include "satori/commandengine.h"
+#include "satori/ui/txt/statetxtwindow.h"
 #include "modules/comm/commuser.h"
 
 
+/**
+ * This class implements a text user interface for the AVR architecture module.
+ * It's job is to contain all the UI subobjects and to dispatch user commands
+ * to the proper objects for execution.
+ */
 class AVRTxtUI : public QObject, public TxtUIInterface, public CommUser {
 	Q_OBJECT
 	Q_INTERFACES(TxtUIInterface)
@@ -42,7 +48,7 @@ private:
 	boost::shared_ptr<MemoryTxtWindow> sram;
 	boost::shared_ptr<MemoryTxtWindow> eeprom;
 	boost::shared_ptr<MemoryTxtWindow> flash;
-	//boost::shared_ptr<StateTxtWindow> state;
+	boost::shared_ptr<StateTxtWindow> state;
 	//boost::shared_ptr<IOTxtWindow> io;
 	//boost::shared_ptr<CodeTxtWindow> code;
 };

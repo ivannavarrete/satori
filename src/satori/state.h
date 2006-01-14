@@ -5,52 +5,47 @@
 
 #include <string>
 #include <vector>
-#include <inttypes.h>
-
-using namespace std;
+#include <inttypes.h>	/// @Todo Phase out this file since it's not portable.
+#include <boost/shared_ptr.hpp>
+#include <boost/shared_array.hpp>
+#include "commandengine.h"
 
 
 /**
- * State entry class.
- *
+ * This class describes and holds the value of a state register such as MCU
+ * general purpose registers, flags, program counters, stack pointers etc.
  */
 class StateEntry {
 public:
-	StateEntry(string n, uint16_t v, unsigned int bs) :
-				name(n), size(bs), value(v) { updated = false; }
+	StateEntry(std::string n, unsigned int bs, uint16_t v=0) :
+			name(n), size(bs), value(v) { updated = false; }
 	
-	string name;
-	unsigned int size;
-	uint32_t value;
-	bool updated;
+	std::string name;		///< name of the state register
+	unsigned int size;		///< state register size in bytes
+	uint32_t value;			///< value of state register
+	bool updated;			///< flag to check if value changed since last read
 };
 
+
 /**
- * State class.
+ * This class is a generic state class that holds the state of an MCU.
  *
  */
 class State {
 public:
-	State();
-	~State();
-	int Read(vector<StateEntry> *state_map_copy);
-	int Write(const StateEntry *state_entry);
+	typedef std::vector<StateEntry> StateMap;
+
+	State(StateMap &state_map, boost::shared_ptr<CommandEngine> command_engine);
+
+	const StateMap &Read();
+	void Write(const StateEntry *state_entry);
 
 private:
-	static const int state_size = 37;
-	static const int num_regs = 32;
+	boost::shared_ptr<CommandEngine> command_engine;
 
-	union {
-		char raw[state_size];
-		struct {
-			uint8_t regs[num_regs];
-			uint16_t pc;
-			uint16_t sp;
-			uint8_t sreg;
-		} field;
-	} state;
-
-	vector<StateEntry> state_map;
+	unsigned int raw_state_size;
+	boost::shared_array<char> raw_state;	///< raw device state
+	StateMap state_map;						///< state map mirroring raw state
 };
 
 

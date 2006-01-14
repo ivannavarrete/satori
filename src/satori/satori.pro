@@ -1,6 +1,6 @@
 
 TEMPLATE = app
-CONFIG += qt warn_on release
+CONFIG += qt warn_on
 QT -= gui
 
 DESTDIR = ../../release/bin

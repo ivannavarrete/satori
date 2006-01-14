@@ -19,6 +19,8 @@ public:
 		GetFLASH = 104,
 		SetSRAM = 105,
 		SetEEPROM = 106,
+		GetState = 107,
+		SetState = 108,
 		Help = 199
 	};
 
