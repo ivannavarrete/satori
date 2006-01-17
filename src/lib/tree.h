@@ -6,8 +6,6 @@
 #include <vector>
 #include <stdexcept>
 
-#include <iostream>			/// @todo Remove.
-
 
 /**
  * Generic tree class.
@@ -47,7 +45,7 @@ public:
 	/// to have access to the private members of tree, for use in testing.
 	friend class mock_tree<NodeObject>;
 
-//private:
+private:
 	/// @todo Figure out if it's better to store trees in a vector of
 	/// shared_ptr:s. This can significantly improve crop() excution time,
 	/// especially for large trees.
@@ -69,6 +67,7 @@ inline tree<NodeObject>::tree(const NodeObject &object) {
 }
 
 
+/*
 template <typename T>
 std::ostream& operator<<(std::ostream& out_stream, const tree<T>& t) {
 	typedef typename tree<T>::const_child_iterator const_child_iterator;
@@ -82,6 +81,7 @@ std::ostream& operator<<(std::ostream& out_stream, const tree<T>& t) {
 
 	return std::out_stream;
 }
+*/
 
 
 /**
@@ -107,18 +107,18 @@ tree<NodeObject> &tree<NodeObject>::add_child(const NodeObject &object) {
  * Delete all children of the current node, except for the one specified by
  * the @a position iterator. After this method the iterator is invalidated.
  *
- * @param position		iterator specifying the child tree to keep
+ * @param position				iterator specifying the child tree to keep
  *
- * @throw out_of_range	This exception is thrown if the @a child_tree was not
- * 						a child of the caller.
+ * @throw std::out_of_range		This exception is thrown if the iterator is out
+ * 								of range.
  *
- * @todo Figure out if it's better to pass position by value, as done in
+ * @Todo Figure out if it's better to pass position by value, as done in
  *		 other container classes.
  */
 template <typename NodeObject>
 void tree<NodeObject>::crop(const child_iterator &position) {
 	if (position < children.begin() || position >= children.end())
-		throw out_of_range("child iterator out of range");
+		throw std::out_of_range("child iterator out of range");
 
 	// get the child we will keep, erase all children, then put the child
 	// we will keep back in

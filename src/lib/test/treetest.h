@@ -8,7 +8,13 @@
 
 
 /**
- * Test cases for the tree class.
+ * Unit tests for the tree class.
+ *
+ * Untested methods:
+ *		value()					(trivial)
+ *		child_begin()			(trivial)
+ *		child_end()				(trivial)
+ *		operator<<()
  */
 class TreeTest : public CppUnit::TestFixture {
 	CPPUNIT_TEST_SUITE(TreeTest);
@@ -20,8 +26,6 @@ class TreeTest : public CppUnit::TestFixture {
 	CPPUNIT_TEST_SUITE_END();
 
 public:
-	static std::string SuiteName() { return "TreeTest"; }
-
 	void Constructor();
 	void add_child();
 	void crop();

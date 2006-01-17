@@ -5,7 +5,7 @@ LIBS += -lcppunit
 SOURCEROOT = ..
 INCLUDEPATH += $${SOURCEROOT}
 
-QMAKE_POST_LINK = ./test
+QMAKE_POST_LINK = ./$${TARGET}
 
 
 # Main unit test files
@@ -22,14 +22,15 @@ SOURCES += main.cpp \
 #
 #SOURCES += ../comm/serial_u.cpp \
 #           ../comm/test/serialtest.cpp
-#
-#
-## Tree class
-#HEADERS += ../lib/tree.h \
-#		   ../lib/test/mock_tree.h \
-#           ../lib/test/treetest.h
-#
-#SOURCES += ../lib/test/treetest.cpp
+
+
+# Tree class
+HEADERS += $${SOURCEROOT}/lib/tree.h \
+		   $${SOURCEROOT}/lib/test/mock_tree.h \
+           $${SOURCEROOT}/lib/test/mocknode.h \
+           $${SOURCEROOT}/lib/test/treetest.h
+
+SOURCES += $${SOURCEROOT}/lib/test/treetest.cpp
 
 
 # Command test suite

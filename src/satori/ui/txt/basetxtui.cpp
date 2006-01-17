@@ -1,6 +1,7 @@
 
 #include <QCoreApplication>
 #include <QDir>
+#include <iostream>
 #include "basetxtui.h"
 
 

@@ -10,7 +10,7 @@ int main() {
 															getRegistry();
 
 	//registry.addRegistry(SuiteName::Serial());
-	//registry.addRegistry(SuiteName::Lib());
+	registry.addRegistry(SuiteName::Tree());
 	registry.addRegistry(SuiteName::Command());
 
 	CppUnit::TextTestRunner runner;

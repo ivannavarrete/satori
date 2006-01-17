@@ -1,11 +1,12 @@
 
 #include <string>
+#include "test/suitename.h"
 #include "treetest.h"
 #include "mock_tree.h"
 #include "mocknode.h"
 
 
-CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(TreeTest, TreeTest::SuiteName());
+CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(TreeTest, SuiteName::Tree());
 
 
 /**
@@ -52,7 +53,6 @@ void TreeTest::add_child() {
 	t.add_child(3).add_child(4);
 	CPPUNIT_ASSERT(t.child_added(3));
 	CPPUNIT_ASSERT(!t.child_added(4)); // only the third child should be visible
-	
 }
 
 
@@ -72,7 +72,6 @@ void TreeTest::crop() {
 	CPPUNIT_ASSERT_NO_THROW(t.crop(i));
 	CPPUNIT_ASSERT_EQUAL(1, t.child_end() - t.child_begin());
 	CPPUNIT_ASSERT_EQUAL(2, (*i).value());
-
 }
 
 
