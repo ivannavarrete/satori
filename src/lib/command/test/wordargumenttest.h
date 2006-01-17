@@ -5,12 +5,16 @@
 
 #include <cppunit/extensions/HelperMacros.h>
 #include <stdexcept>
-
 #include "../wordargument.h"
 
-using namespace std;
 
-
+/**
+ * Unit tests for the WordArgument class.
+ *
+ * Untested methods:
+ *		Constructor
+ *		Value()					(trivial)
+ */
 class WordArgumentTest : public CppUnit::TestFixture {
 	CPPUNIT_TEST_SUITE(WordArgumentTest);
 	CPPUNIT_TEST(IsType);
@@ -19,8 +23,6 @@ class WordArgumentTest : public CppUnit::TestFixture {
 	CPPUNIT_TEST_SUITE_END();
 
 public:
-	static string SuiteName() { return "WordArgumentTest"; }
-
 	void IsType();
 	void SetType();
 	void Parse();

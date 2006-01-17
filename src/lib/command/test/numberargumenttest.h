@@ -5,17 +5,15 @@
 
 #include <cppunit/extensions/HelperMacros.h>
 #include <stdexcept>
-
 #include "../numberargument.h"
-
-using namespace std;
 
 
 /**
- * Test suite for NumberArgument class.
+ * Unit tests for NumberArgument class.
  *
  * Untested methods:
- *		Value()
+ *      Constructor
+ *		Value()					(trivial)
  */
 class NumberArgumentTest : public CppUnit::TestFixture {
 	CPPUNIT_TEST_SUITE(NumberArgumentTest);
@@ -25,8 +23,6 @@ class NumberArgumentTest : public CppUnit::TestFixture {
 	CPPUNIT_TEST_SUITE_END();
 
 public:
-	static string SuiteName() { return "NumberArgumentTest"; }
-
 	void IsType();
 	void SetType();
 	void Parse();

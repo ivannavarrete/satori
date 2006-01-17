@@ -4,41 +4,45 @@
 
 
 #include <cppunit/extensions/HelperMacros.h>
-
 #include "../argument.h"
 
-using namespace std;
 
-
+/**
+ * Unit tests for the Argument class.
+ *
+ * Untested methods:
+ *		Constructor
+ *		Type()					(trivial)
+ *		Opt()					(trivial)
+ *		Modifier()				(trivial)
+ *		IsType()				(pure virtual; mock class method)
+ *		SetType()				(pure virtual; mock class method)
+ */
 class ArgumentTest : public CppUnit::TestFixture {
 	CPPUNIT_TEST_SUITE(ArgumentTest);
-	CPPUNIT_TEST(Constructor);
 	CPPUNIT_TEST(Extract);
 	CPPUNIT_TEST_SUITE_END();
 
 public:
-	static string SuiteName() { return "ArgumentTest"; }
-
-	void Constructor();
 	void Extract();
 };
 
 
 /**
  * Since we can't create Argument objects because of it's pure virtual methods
- * we use this class for testing the base Argument.
+ * we use this class for testing the base Argument class.
  */
 class MockArgument : public Argument {
 public:
 	MockArgument() : Argument(Argument::Word) {}
 	
-	virtual bool IsType(const string &argument) const {
+	virtual bool IsType(const std::string &argument) const {
 		if (argument.length() > 1 && isalpha(argument.at(1)))
 			return true;
 		return false;
 	}
 	
-	virtual void SetType(const string &argument) {
+	virtual void SetType(const std::string &argument) {
 		argument.length();
 	}
 };

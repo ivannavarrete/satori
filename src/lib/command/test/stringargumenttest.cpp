@@ -1,9 +1,9 @@
 
-
+#include "test/suitename.h"
 #include "stringargumenttest.h"
 
 
-CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(StringArgumentTest, StringArgumentTest::SuiteName());
+CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(StringArgumentTest, SuiteName::Command());
 
 
 /**
@@ -12,7 +12,7 @@ CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(StringArgumentTest, StringArgumentTest::Su
  */
 void StringArgumentTest::IsType() {
 	StringArgument string_argument;
-	string string_string;
+	std::string string_string;
 
 	// first some valid argument strings
 
@@ -63,8 +63,8 @@ void StringArgumentTest::IsType() {
  */
 void StringArgumentTest::SetType() {
 	StringArgument string_argument;
-	string string_string;
-	string normal_string;
+	std::string string_string;
+	std::string normal_string;
 
 	// valid argument strings
 
@@ -104,22 +104,22 @@ void StringArgumentTest::SetType() {
 	// not enclosed by quotes
 	string_string = "";
 	CPPUNIT_ASSERT_THROW(string_argument.SetType(string_string),
-												invalid_argument);
+										std::invalid_argument);
 
 	// not enclosed by quotes, only one quote
 	string_string = "\"";
 	CPPUNIT_ASSERT_THROW(string_argument.SetType(string_string),
-												invalid_argument);
+										std::invalid_argument);
 	
 	// enclosed by quotes but one additional quote in the middle
 	string_string = "\"\"\"";
 	CPPUNIT_ASSERT_THROW(string_argument.SetType(string_string),
-												invalid_argument);
+										std::invalid_argument);
 	
 	// null character in the middle
 	string_string.assign("\"foo\0bar\"", 10);
 	CPPUNIT_ASSERT_THROW(string_argument.SetType(string_string),
-												invalid_argument);
+										std::invalid_argument);
 }
 
 
@@ -128,8 +128,8 @@ void StringArgumentTest::SetType() {
  */
 void StringArgumentTest::Parse() {
 	StringArgument string_argument;
-	string string_string;
-	string normal_string;
+	std::string string_string;
+	std::string normal_string;
 
 	// valid argument strings
 
@@ -162,19 +162,23 @@ void StringArgumentTest::Parse() {
 
 	// not enclosed by quotes
 	string_string = "";
-	CPPUNIT_ASSERT_THROW(string_argument.Parse(string_string),invalid_argument);
+	CPPUNIT_ASSERT_THROW(string_argument.Parse(string_string),
+										std::invalid_argument);
 
 	// not enclosed by quotes, only one quote
 	string_string = "\"";
-	CPPUNIT_ASSERT_THROW(string_argument.Parse(string_string),invalid_argument);
+	CPPUNIT_ASSERT_THROW(string_argument.Parse(string_string),
+										std::invalid_argument);
 
 	// enclosed by quotes but one additional quote in the middle
 	string_string = "\"\"\"";
-	CPPUNIT_ASSERT_THROW(string_argument.Parse(string_string),invalid_argument);
+	CPPUNIT_ASSERT_THROW(string_argument.Parse(string_string),
+										std::invalid_argument);
 	
 	// null character in the middle
 	string_string.assign("\"foo\0bar\"", 10);
-	CPPUNIT_ASSERT_THROW(string_argument.Parse(string_string),invalid_argument);
+	CPPUNIT_ASSERT_THROW(string_argument.Parse(string_string),
+										std::invalid_argument);
 }
 
 
@@ -184,8 +188,8 @@ void StringArgumentTest::Parse() {
  */
 void StringArgumentTest::Extract() {
 	StringArgument string_argument;
-	string command_line;
-	string expected_first;
+	std::string command_line;
+	std::string expected_first;
 
 	// valid first arguments
 

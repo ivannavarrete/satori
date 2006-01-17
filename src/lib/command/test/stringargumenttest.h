@@ -5,12 +5,16 @@
 
 #include <cppunit/extensions/HelperMacros.h>
 #include <stdexcept>
-
 #include "../stringargument.h"
 
-using namespace std;
 
-
+/**
+ * Unit tests for the StringArgument class.
+ *
+ * Untested methods:
+ *		Constructor
+ *		Value()					(trivial)
+ */
 class StringArgumentTest : public CppUnit::TestFixture {
 	CPPUNIT_TEST_SUITE(StringArgumentTest);
 	CPPUNIT_TEST(IsType);
@@ -20,8 +24,6 @@ class StringArgumentTest : public CppUnit::TestFixture {
 	CPPUNIT_TEST_SUITE_END();
 
 public:
-	static string SuiteName() { return "StringArgumentTest"; }
-
 	void IsType();
 	void SetType();
 	void Parse();

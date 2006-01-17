@@ -6,9 +6,21 @@
 #include <cppunit/extensions/HelperMacros.h>
 #include "../command.h"
 
-using namespace std;
 
-
+/**
+ * Unit tests for Command class.
+ *
+ * Untested methods:
+ *		operator=()
+ *		Name()					(trivial)
+ *		Type()					(trivial)
+ *		ShortDescription()		(trivial)
+ *		LongDescription()		(trivial)
+ *		ArgumentCount()			(trivial)
+ *		IsValid()
+ *
+ * @Todo Add tests for operator=(), AddArguments() and IsValid() methods.
+ */
 class CommandTest : public CppUnit::TestFixture {
 	CPPUNIT_TEST_SUITE(CommandTest);
 	CPPUNIT_TEST(Constructor);
@@ -17,8 +29,6 @@ class CommandTest : public CppUnit::TestFixture {
 	CPPUNIT_TEST_SUITE_END();
 
 public:
-	static string SuiteName() { return "CommandTest"; }
-
 	void Constructor();
 	void AddArguments();
 	void ParseArguments();

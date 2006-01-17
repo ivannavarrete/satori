@@ -4,8 +4,6 @@
 #include "mock_tree.h"
 #include "mocknode.h"
 
-using namespace std;
-
 
 CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(TreeTest, TreeTest::SuiteName());
 
@@ -25,8 +23,8 @@ void TreeTest::Constructor() {
 	//CPPUNIT_ASSERT_EQUAL(mock_node, mock_tree.value());
 
 	// create a tree with a more complex node object from the stl
-	string string_node("string node");
-	tree<string> string_tree(string_node);
+	std::string string_node("string node");
+	tree<std::string> string_tree(string_node);
 	CPPUNIT_ASSERT_EQUAL(string_node, string_tree.value());
 }
 

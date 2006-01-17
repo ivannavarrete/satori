@@ -8,6 +8,10 @@ DESTDIR = ../../../../release/modules/arch/avr
 SOURCEROOT = ../../..
 INCLUDEPATH += $${SOURCEROOT}
 
+# force removal of lib (currently not done with 'lib' templates)
+unix:QMAKE_CLEAN = $${DESTDIR}/libavr.so
+win32:QMAKE_CLEAN = $${DESTDIR}/avr.dll
+
 
 # AVR architecture text UI
 HEADERS += avrtxtui.h \

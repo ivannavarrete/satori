@@ -1,10 +1,9 @@
 
-#include <boost/tokenizer.hpp>
-
+#include "test/suitename.h"
 #include "numberargumenttest.h"
 
 
-CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(NumberArgumentTest, NumberArgumentTest::SuiteName());
+CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(NumberArgumentTest, SuiteName::Command());
 
 
 /**
@@ -12,7 +11,7 @@ CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(NumberArgumentTest, NumberArgumentTest::Su
  */
 void NumberArgumentTest::IsType() {
 	NumberArgument number_argument;
-	string number_string;
+	std::string number_string;
 
 	// test some valid numbers
 	number_string = "0";
@@ -21,6 +20,18 @@ void NumberArgumentTest::IsType() {
 	number_string = "123";
 	CPPUNIT_ASSERT(number_argument.IsType(number_string));
 
+	number_string = "0x123";
+	CPPUNIT_ASSERT(number_argument.IsType(number_string));
+
+	number_string = "$123";
+	CPPUNIT_ASSERT(number_argument.IsType(number_string));
+
+	number_string = "0xabcdef";
+	CPPUNIT_ASSERT(number_argument.IsType(number_string));
+
+	number_string = "$abcdef";
+	CPPUNIT_ASSERT(number_argument.IsType(number_string));
+	
 	number_string = "0xABCDEF";
 	CPPUNIT_ASSERT(number_argument.IsType(number_string));
 
@@ -31,10 +42,10 @@ void NumberArgumentTest::IsType() {
 	number_string = "";
 	CPPUNIT_ASSERT(!number_argument.IsType(number_string));
 
-	number_string = "123 ";
+	number_string = "123 ";			// trailing space
 	CPPUNIT_ASSERT(!number_argument.IsType(number_string));
 	
-	number_string = " 123";
+	number_string = " 123";			// leading space
 	CPPUNIT_ASSERT(!number_argument.IsType(number_string));
 
 	number_string = "foo";
@@ -59,7 +70,7 @@ void NumberArgumentTest::IsType() {
  */
 void NumberArgumentTest::SetType() {
 	NumberArgument number_argument;
-	string number_string;
+	std::string number_string;
 	uint32_t expected_number;
 
 	// test some valid numbers
@@ -83,38 +94,58 @@ void NumberArgumentTest::SetType() {
 	CPPUNIT_ASSERT_NO_THROW(number_argument.SetType(number_string));
 	CPPUNIT_ASSERT_EQUAL(expected_number, number_argument.Value());
 
+	number_string = "0xabcdef";
+	expected_number = 0xabcdef;
+	CPPUNIT_ASSERT_NO_THROW(number_argument.SetType(number_string));
+	CPPUNIT_ASSERT_EQUAL(expected_number, number_argument.Value());
+
+	number_string = "$abcdef";
+	expected_number = 0xabcdef;
+	CPPUNIT_ASSERT_NO_THROW(number_argument.SetType(number_string));
+	CPPUNIT_ASSERT_EQUAL(expected_number, number_argument.Value());
+
+	number_string = "0xABCDEF";
+	expected_number = 0xABCDEF;
+	CPPUNIT_ASSERT_NO_THROW(number_argument.SetType(number_string));
+	CPPUNIT_ASSERT_EQUAL(expected_number, number_argument.Value());
+
+	number_string = "$ABCDEF";
+	expected_number = 0xABCDEF;
+	CPPUNIT_ASSERT_NO_THROW(number_argument.SetType(number_string));
+	CPPUNIT_ASSERT_EQUAL(expected_number, number_argument.Value());
+
 	// and some invalid numbers
 	number_string = "";
 	CPPUNIT_ASSERT_THROW(number_argument.SetType(number_string),
-												invalid_argument);
+										std::invalid_argument);
 
 	number_string = "123 ";
 	CPPUNIT_ASSERT_THROW(number_argument.SetType(number_string),
-												invalid_argument);
+										std::invalid_argument);
 	
 	number_string = " 123";
 	CPPUNIT_ASSERT_THROW(number_argument.SetType(number_string),
-												invalid_argument);
+										std::invalid_argument);
 	
 	number_string = "foo";
 	CPPUNIT_ASSERT_THROW(number_argument.SetType(number_string),
-												invalid_argument);
+										std::invalid_argument);
 
 	number_string = "0x";
 	CPPUNIT_ASSERT_THROW(number_argument.SetType(number_string),
-												invalid_argument);
+										std::invalid_argument);
 
 	number_string = "$";
 	CPPUNIT_ASSERT_THROW(number_argument.SetType(number_string),
-												invalid_argument);
+										std::invalid_argument);
 	
 	number_string = "0x0x123";
 	CPPUNIT_ASSERT_THROW(number_argument.SetType(number_string),
-												invalid_argument);
+										std::invalid_argument);
 	
 	number_string = "$$123";
 	CPPUNIT_ASSERT_THROW(number_argument.Parse(number_string),
-													invalid_argument);
+										std::invalid_argument);
 }
 
 
@@ -123,7 +154,7 @@ void NumberArgumentTest::SetType() {
  */
 void NumberArgumentTest::Parse() {
 	NumberArgument number_argument;
-	string number_string;
+	std::string number_string;
 	uint32_t expected_number;
 
 	// test some valid numbers
@@ -143,28 +174,52 @@ void NumberArgumentTest::Parse() {
 	expected_number = 0x123;
 	CPPUNIT_ASSERT_EQUAL(expected_number, number_argument.Parse(number_string));
 
+	number_string = "0xabcdef";
+	expected_number = 0xabcdef;
+	CPPUNIT_ASSERT_EQUAL(expected_number, number_argument.Parse(number_string));
+
+	number_string = "$abcdef";
+	expected_number = 0xabcdef;
+	CPPUNIT_ASSERT_EQUAL(expected_number, number_argument.Parse(number_string));
+
+	number_string = "0xABCDEF";
+	expected_number = 0xABCDEF;
+	CPPUNIT_ASSERT_EQUAL(expected_number, number_argument.Parse(number_string));
+
+	number_string = "$ABCDEF";
+	expected_number = 0xABCDEF;
+	CPPUNIT_ASSERT_EQUAL(expected_number, number_argument.Parse(number_string));
+
 	// and some invalid numbers
 	number_string = "";
-	CPPUNIT_ASSERT_THROW(number_argument.Parse(number_string),invalid_argument);
+	CPPUNIT_ASSERT_THROW(number_argument.Parse(number_string),
+										std::invalid_argument);
 
 	number_string = "123 ";
-	CPPUNIT_ASSERT_THROW(number_argument.Parse(number_string),invalid_argument);
+	CPPUNIT_ASSERT_THROW(number_argument.Parse(number_string),
+										std::invalid_argument);
 	
 	number_string = " 123";
-	CPPUNIT_ASSERT_THROW(number_argument.Parse(number_string),invalid_argument);
+	CPPUNIT_ASSERT_THROW(number_argument.Parse(number_string),
+										std::invalid_argument);
 	
 	number_string = "foo";
-	CPPUNIT_ASSERT_THROW(number_argument.Parse(number_string),invalid_argument);
+	CPPUNIT_ASSERT_THROW(number_argument.Parse(number_string),
+										std::invalid_argument);
 
 	number_string = "0x";
-	CPPUNIT_ASSERT_THROW(number_argument.Parse(number_string),invalid_argument);
+	CPPUNIT_ASSERT_THROW(number_argument.Parse(number_string),
+										std::invalid_argument);
 
 	number_string = "$";
-	CPPUNIT_ASSERT_THROW(number_argument.Parse(number_string),invalid_argument);
+	CPPUNIT_ASSERT_THROW(number_argument.Parse(number_string),
+										std::invalid_argument);
 	
 	number_string = "0x0x123";
-	CPPUNIT_ASSERT_THROW(number_argument.Parse(number_string),invalid_argument);
+	CPPUNIT_ASSERT_THROW(number_argument.Parse(number_string),
+										std::invalid_argument);
 	
 	number_string = "$$123";
-	CPPUNIT_ASSERT_THROW(number_argument.Parse(number_string),invalid_argument);
+	CPPUNIT_ASSERT_THROW(number_argument.Parse(number_string),
+										std::invalid_argument);
 }

@@ -8,6 +8,10 @@ DESTDIR = ../../../../release/modules/comm/serial
 SOURCEROOT = ../../..
 INCLUDEPATH += $${SOURCEROOT}
 
+# force removal of lib (currently not done with 'lib' templates)
+unix:QMAKE_CLEAN = $${DESTDIR}/libserial.so
+win32:QMAKE_CLEAN = $${DESTDIR}/serial.dll
+
 
 # Comm independent UI classes
 HEADERS += $${SOURCEROOT}/satori/ui/txt/txtuiinterface.h

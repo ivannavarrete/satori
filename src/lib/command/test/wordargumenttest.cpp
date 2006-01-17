@@ -1,9 +1,9 @@
 
-
+#include "test/suitename.h"
 #include "wordargumenttest.h"
 
 
-CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(WordArgumentTest, WordArgumentTest::SuiteName());
+CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(WordArgumentTest, SuiteName::Command());
 
 
 /**
@@ -11,7 +11,7 @@ CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(WordArgumentTest, WordArgumentTest::SuiteN
  */
 void WordArgumentTest::IsType() {
 	WordArgument word_argument;
-	string word_string;
+	std::string word_string;
 
 	word_string = "f";
 	CPPUNIT_ASSERT(word_argument.IsType(word_string));
@@ -57,7 +57,7 @@ void WordArgumentTest::IsType() {
  */
 void WordArgumentTest::SetType() {
 	WordArgument word_argument;
-	string word_string;
+	std::string word_string;
 
 	// valid word arguments
 	word_string = "f";
@@ -82,25 +82,32 @@ void WordArgumentTest::SetType() {
 
 	// invalid word arguments
 	word_string = "";
-	CPPUNIT_ASSERT_THROW(word_argument.SetType(word_string), invalid_argument);
+	CPPUNIT_ASSERT_THROW(word_argument.SetType(word_string),
+									std::invalid_argument);
 
 	word_string = " foo";
-	CPPUNIT_ASSERT_THROW(word_argument.SetType(word_string), invalid_argument);
+	CPPUNIT_ASSERT_THROW(word_argument.SetType(word_string),
+									std::invalid_argument);
 	
 	word_string = "foo ";
-	CPPUNIT_ASSERT_THROW(word_argument.SetType(word_string), invalid_argument);
+	CPPUNIT_ASSERT_THROW(word_argument.SetType(word_string),
+									std::invalid_argument);
 
 	word_string = "0";
-	CPPUNIT_ASSERT_THROW(word_argument.SetType(word_string), invalid_argument);
+	CPPUNIT_ASSERT_THROW(word_argument.SetType(word_string),
+									std::invalid_argument);
 
 	word_string = "_";
-	CPPUNIT_ASSERT_THROW(word_argument.SetType(word_string), invalid_argument);
+	CPPUNIT_ASSERT_THROW(word_argument.SetType(word_string),
+									std::invalid_argument);
 
 	word_string = "$";
-	CPPUNIT_ASSERT_THROW(word_argument.SetType(word_string), invalid_argument);
+	CPPUNIT_ASSERT_THROW(word_argument.SetType(word_string),
+									std::invalid_argument);
 
 	word_string = "foo$";
-	CPPUNIT_ASSERT_THROW(word_argument.SetType(word_string), invalid_argument);
+	CPPUNIT_ASSERT_THROW(word_argument.SetType(word_string),
+									std::invalid_argument);
 }
 
 
@@ -109,7 +116,7 @@ void WordArgumentTest::SetType() {
  */
 void WordArgumentTest::Parse() {
 	WordArgument word_argument;
-	string word_string;
+	std::string word_string;
 
 	// valid word arguments
 	word_string = "f";

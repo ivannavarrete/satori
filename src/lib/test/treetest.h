@@ -4,10 +4,7 @@
 
 
 #include <cppunit/extensions/HelperMacros.h>
-
 #include "../tree.h"
-
-using namespace std;
 
 
 /**
@@ -23,7 +20,7 @@ class TreeTest : public CppUnit::TestFixture {
 	CPPUNIT_TEST_SUITE_END();
 
 public:
-	static string SuiteName() { return "TreeTest"; }
+	static std::string SuiteName() { return "TreeTest"; }
 
 	void Constructor();
 	void add_child();
