@@ -10,9 +10,9 @@ SerialTxtUI::SerialTxtUI() {
 	// @todo Remove this. Have the Serial created and modified with a 'set'
 	// 		 command instead.
 	serial = boost::shared_ptr<Serial>(new Serial("/dev/ttyS1"));
-	serial->Baud(38400);
-	serial->DataBits(8);
-	serial->StopBits(1);
+	serial->SetBaud(38400);
+	serial->SetDataBits(8);
+	serial->SetStopBits(1);
 }
 
 
@@ -75,9 +75,9 @@ void SerialTxtUI::CommandSet(const Command &command) {
 
 		// temporary..
 		std::cout << "set serial var...\n";
-		serial->Baud(9600);
-		serial->DataBits(8);
-		serial->StopBits(1);
+		serial->SetBaud(9600);
+		serial->SetDataBits(8);
+		serial->SetStopBits(1);
 	}
 }
 

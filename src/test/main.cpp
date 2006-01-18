@@ -9,9 +9,9 @@ int main() {
 	CppUnit::TestFactoryRegistry &registry = CppUnit::TestFactoryRegistry::
 															getRegistry();
 
-	//registry.addRegistry(SuiteName::Serial());
 	registry.addRegistry(SuiteName::Tree());
 	registry.addRegistry(SuiteName::Command());
+    registry.addRegistry(SuiteName::Serial());
 
 	CppUnit::TextTestRunner runner;
 	runner.addTest(registry.makeTest());

@@ -30,9 +30,9 @@ public:
 	unsigned int Baud() const;
 	unsigned int DataBits() const;
 	unsigned int StopBits() const;
-	void Baud(const unsigned int baud);
-	void DataBits(const unsigned int data_bits);
-	void StopBits(const unsigned int stop_bits);
+	void SetBaud(const unsigned int baud);
+	void SetDataBits(const unsigned int data_bits);
+	void SetStopBits(const unsigned int stop_bits);
 
 signals:
 	void ErrorSignal(std::string cause); ///< signal for error reporting

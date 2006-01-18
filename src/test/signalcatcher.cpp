@@ -32,6 +32,9 @@ bool SignalCatcher::StringSignalsReceived(unsigned int n) {
 }
 
 
+/**
+ * Get the number of total signals received.
+ */
 unsigned int SignalCatcher::SumSignals() {
 	unsigned int all_signals = string_signal;
 

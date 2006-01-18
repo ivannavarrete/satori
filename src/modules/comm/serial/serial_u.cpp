@@ -204,11 +204,11 @@ unsigned int Serial::StopBits() const {
 /**
  * Set the baud rate of the serial device.
  *
- * @throws std::runtime_error	Thrown if the baud rate was not supported.
+ * @throws std::runtime_error	Thrown if the baud rate is not supported.
  *
  * @param baud					baud rate
  */
-void Serial::Baud(const unsigned int baud) {
+void Serial::SetBaud(const unsigned int baud) {
 	struct termios new_mode;
 	speed_t speed;
 
@@ -238,7 +238,7 @@ void Serial::Baud(const unsigned int baud) {
 	// set input and output baud rates (in practice this should never fail)
 	memcpy(&new_mode, &mode, sizeof(struct termios));
 
-	if ((cfsetospeed(&new_mode, speed) < 0) || cfsetispeed(&new_mode, speed))
+	if ((cfsetospeed(&new_mode, speed)<0) || (cfsetispeed(&new_mode, speed)<0))
 		throw std::runtime_error("Can't set baud rate");
 
 	// SetMode can fail though
@@ -248,48 +248,54 @@ void Serial::Baud(const unsigned int baud) {
 
 /**
  * Set number of data bits.
+ * 
+ * @throws std::runtime_error	Thrown if the data bit setting is not supported.
  *
- * @param data_bits		number of data bits, 5-8
+ * @param data_bits				number of data bits, 5-8
  */
-void Serial::DataBits(const unsigned int data_bits) {
+void Serial::SetDataBits(const unsigned int data_bits) {
 	struct termios new_mode;
-	tcflag_t data_bits_flag = 0;
+
+	// make modification on temporary mode so that SetMode() can undo the
+	// change if it fails
+	memcpy(&new_mode, &mode, sizeof(struct termios));
 
 	// determine number of data bits
 	switch (data_bits) {
-		case 5: data_bits_flag = CS5; break;
-		case 6: data_bits_flag = CS6; break;
-		case 7: data_bits_flag = CS7; break;
-		case 8: data_bits_flag = CS8; break;
+		case 5: new_mode.c_cflag = (new_mode.c_cflag & ~CSIZE) | CS5; break;
+		case 6: new_mode.c_cflag = (new_mode.c_cflag & ~CSIZE) | CS6; break;
+		case 7: new_mode.c_cflag = (new_mode.c_cflag & ~CSIZE) | CS7; break;
+		case 8: new_mode.c_cflag = (new_mode.c_cflag & ~CSIZE) | CS8; break;
 		default: throw std::runtime_error("Invalid number of data bits");
 	}
 
 	// set number of data bits
-	memcpy(&new_mode, &mode, sizeof(struct termios));
-	new_mode.c_cflag |= data_bits_flag;
 	SetMode(new_mode);
 }
 
 
 /**
  * Set number of stop bits.
+ * 
+ * @throws std::runtime_error	Thrown if the stop bit setting is not supported.
  *
- * @param stop_bits		number of stop bits, 1-2
+ * @param stop_bits				number of stop bits, 1-2
  */
-void Serial::StopBits(const unsigned int stop_bits) {
+void Serial::SetStopBits(const unsigned int stop_bits) {
 	struct termios new_mode;
-	tcflag_t stop_bits_flag = 0;
+
+	// make modification on temporary mode so that SetMode() can undo the
+	// change if it fails
+	memcpy(&new_mode, &mode, sizeof(struct termios));
 
 	// determine number of stop bits
 	switch (stop_bits) {
-		case 1: stop_bits_flag &= ~CSTOPB; break;
-		case 2: stop_bits_flag |= CSTOPB; break;
+		case 1: new_mode.c_cflag &= ~CSTOPB; break;
+		case 2: new_mode.c_cflag |= CSTOPB; break;
 		default: throw std::runtime_error("Invalid number of stop bits");
 	}
 
 	// set number of stop bits
-	memcpy(&new_mode, &mode, sizeof(struct termios));
-	new_mode.c_cflag |= stop_bits_flag;
 	SetMode(new_mode);
 }
 
@@ -325,7 +331,7 @@ void Serial::SetMode(struct termios &new_mode) {
 	*/
 	
 	//*
-	cfmakeraw(&new_mode);
+	//cfmakeraw(&new_mode);
 	if (tcsetattr(dev, TCSADRAIN, &new_mode))
 		throw std::runtime_error("Can't set device mode");
 	//*/

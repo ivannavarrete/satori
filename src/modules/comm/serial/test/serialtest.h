@@ -3,61 +3,34 @@
 #define SERIALTEST_H
 
 
-#include <string>
 #include <cppunit/extensions/HelperMacros.h>
-#include <QObject>
-
-#include "test/signalcatcher.h"
-#include "comm/serial_u.h"
-
-using namespace std;
+#include "../serial_u.h"
 
 
-extern SignalCatcher signal_catcher;
+/**
+ * Unit tests for the Serial class.
+ *
+ * Untested methods:
+ *		Baud()					(can't invoke error)
+ *		DataBits()				(can't invoke error)
+ *		StopBits()				(trivial)
+ */
+class SerialTest : public CppUnit::TestFixture {
+	CPPUNIT_TEST_SUITE(SerialTest);
+	CPPUNIT_TEST(Constructor);
+	CPPUNIT_TEST(Destructor);
+	CPPUNIT_TEST(SetBaud);
+	CPPUNIT_TEST(SetDataBits);
+	CPPUNIT_TEST(SetStopBits);
+	CPPUNIT_TEST_SUITE_END();
 
-
-namespace SerialTest {
-	/**
-	 * Return the name of the Serial test suites.
-	 */
-	string SuiteName();
-
-
-	/**
-	 * Test the Open() method of the Serial class.
-	 */
-	class OpenTest : public CppUnit::TestFixture {
-		CPPUNIT_TEST_SUITE(OpenTest);
-		CPPUNIT_TEST(ConstructorTest);
-		CPPUNIT_TEST_SUITE_END();
-
-	public:
-		void ConstructorTest();
-	};
-
-
-	/**
-	 * Test the Close() method of the Serial class.
-	 */
-	class CloseTest : public CppUnit::TestFixture {
-		CPPUNIT_TEST_SUITE(CloseTest);
-		CPPUNIT_TEST(DestructorTest);
-		CPPUNIT_TEST_SUITE_END();
-
-	public:
-		void DestructorTest();
-	};
-
-
-	class SerialTest : public CppUnit::TestFixture {
-		CPPUNIT_TEST_SUITE(SerialTest);
-		CPPUNIT_TEST(ConfigTest);
-		CPPUNIT_TEST_SUITE_END();
-
-	public:
-		void ConfigTest();
-	};
-}
+public:
+	void Constructor();
+	void Destructor();
+	void SetBaud();
+	void SetDataBits();
+	void SetStopBits();
+};
 
 
 #endif

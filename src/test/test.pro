@@ -9,22 +9,15 @@ QMAKE_POST_LINK = ./$${TARGET}
 
 
 # Main unit test files
-HEADERS += suitename.h
+HEADERS += suitename.h \
+           signalcatcher.h
 
 SOURCES += main.cpp \
-		   suitename.cpp
+		   suitename.cpp \
+           signalcatcher.cpp
 
 
-## Serial classes
-#HEADERS += ../comm/comm.h \
-#           ../comm/serial_u.h \
-#           ../comm/test/serialtest.h
-#
-#SOURCES += ../comm/serial_u.cpp \
-#           ../comm/test/serialtest.cpp
-
-
-# Tree class
+# Tree class test suite
 HEADERS += $${SOURCEROOT}/lib/tree.h \
 		   $${SOURCEROOT}/lib/test/mock_tree.h \
            $${SOURCEROOT}/lib/test/mocknode.h \
@@ -59,3 +52,13 @@ SOURCES += $${SOURCEROOT}/lib/command/command.cpp \
            $${SOURCEROOT}/lib/command/test/stringargumenttest.cpp \
            $${SOURCEROOT}/lib/command/wordargument.cpp \
            $${SOURCEROOT}/lib/command/test/wordargumenttest.cpp
+
+
+# Serial test suite
+HEADERS += $${SOURCEROOT}/modules/comm/comm.h \
+           $${SOURCEROOT}/modules/comm/serial/serial_u.h \
+           $${SOURCEROOT}/modules/comm/serial/test/serialtest.h
+
+SOURCES += $${SOURCEROOT}/modules/comm/serial/serial_u.cpp \
+           $${SOURCEROOT}/modules/comm/serial/test/serialtest.cpp
+

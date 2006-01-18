@@ -2,16 +2,12 @@
 #ifndef SIGNALCATCHER_H
 #define SIGNALCATCHER_H
 
-#include <iostream>
-
 #include <string>
 #include <QObject>
 
-using namespace std;
-
 
 /*
- * This class is used to receive and count boost signals.
+ * This class is used to receive and count Qt signals.
  */
 class SignalCatcher : public QObject {
 	Q_OBJECT
@@ -25,10 +21,9 @@ public:
 	bool StringSignalsReceived(unsigned int n);
 
 public slots:
-	void StringSlot(string str) { cout << str << endl; string_signal++; }
+	void StringSlot(std::string str) { string_signal++; }
 
 private:
-
 	unsigned int string_signal;
 };
 
