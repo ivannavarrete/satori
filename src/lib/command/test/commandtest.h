@@ -17,6 +17,7 @@
  *		ShortDescription()		(trivial)
  *		LongDescription()		(trivial)
  *		ArgumentCount()			(trivial)
+ *		AddArguments()
  *		IsValid()
  *
  * @Todo Add tests for operator=(), AddArguments() and IsValid() methods.

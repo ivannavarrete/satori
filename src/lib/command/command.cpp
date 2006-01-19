@@ -387,3 +387,29 @@ const std::string &Command::GetString(const unsigned int i) const {
 		throw std::logic_error("bad argument: index out of range");
 	}
 }
+
+
+/**
+ * Get the char from the character argument at index @a i. This method should be
+ * called after a call to ParseArguments().
+ *
+ * @param i						argument index
+ *
+ * @return						Reference to char.
+ * 
+ * @throw std::logic_error		Thrown if there was an error getting the char
+ * 								value from the argument tree. This happens if
+ * 								the @a i index was out of range, or the argument
+ * 								at index @a i is not a character argument.
+ */
+const char &Command::GetCharacter(const unsigned int i) const {
+	try {
+		Argument &argument = *(argument_path.at(i));
+		if (argument.Type() == Argument::Character)
+			return (static_cast<CharacterArgument &>(argument)).Value();
+
+		throw std::logic_error("bad argument: not a character");
+	} catch (std::out_of_range &e) {
+		throw std::logic_error("bad_argument: index out of rande");
+	}
+}

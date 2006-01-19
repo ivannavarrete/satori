@@ -12,6 +12,7 @@
 #include "argument.h"
 #include "wordargument.h"
 #include "stringargument.h"
+#include "characterargument.h"
 #include "numberargument.h"
 //#include "commandtable.h"
 
@@ -58,6 +59,7 @@ public:
 	uint32_t GetNumber(const unsigned int i) const;
 	const std::string &GetWord(const unsigned int i) const;
 	const std::string &GetString(const unsigned int i) const;
+	const char &GetCharacter(const unsigned int i) const;
 
 private:
 	void AddArguments(ArgumentList &sub_list, ArgumentTree &sub_tree);

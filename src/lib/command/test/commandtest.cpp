@@ -80,10 +80,9 @@ void CommandTest::AddArguments() {
 
 
 /**
- * Test for ParseArguments() and GetWord(), GetString() and GetNumber() methods.
- * We test them together since they are not easily tested by themselves. To
- * insure that ParseArguments() works we need to use the Get*() methods, and
- * vice versa.
+ * Test for ParseArguments() and Get*() methods. We test them together since
+ * they are not easily tested by themselves. To insure that ParseArguments()
+ * works we need to use the Get*() methods, and vice versa.
  *
  * Assumes that AddArguments() works.
  */
@@ -116,6 +115,18 @@ void CommandTest::ParseArguments() {
 	CPPUNIT_ASSERT_EQUAL(std::string("string argument"), command->GetString(1));
 
 
+	// single character argument
+	// test command: cmd <character>
+	command = boost::shared_ptr<Command>(new Command("cmd"));
+	argument_list.clear();
+	argument_list.push_back(boost::shared_ptr<Argument>(new CharacterArgument));
+	command->AddArguments(argument_list);
+	
+	command_line = "cmd '.'";
+	CPPUNIT_ASSERT_NO_THROW(command->ParseArguments(command_line));
+	CPPUNIT_ASSERT_EQUAL(char('.'), command->GetCharacter(1));
+
+	
 	// single number argument
 	// test command: cmd <number>
 	command = boost::shared_ptr<Command>(new Command("cmd"));
@@ -129,19 +140,21 @@ void CommandTest::ParseArguments() {
 
 
 	// sequence of arguments
-	// test command: cmd <word> <string> <number>
+	// test command: cmd <word> <string> <character> <number>
 	command = boost::shared_ptr<Command>(new Command("cmd"));
 	argument_list.clear();
 	argument_list.push_back(boost::shared_ptr<Argument>(new WordArgument));
 	argument_list.push_back(boost::shared_ptr<Argument>(new StringArgument));
+	argument_list.push_back(boost::shared_ptr<Argument>(new CharacterArgument));
 	argument_list.push_back(boost::shared_ptr<Argument>(new NumberArgument));
 	command->AddArguments(argument_list);
 	
-	command_line = "cmd word_argument \"string argument\" 123";
+	command_line = "cmd word_argument \"string argument\" 'a' 123";
 	CPPUNIT_ASSERT_NO_THROW(command->ParseArguments(command_line));
 	CPPUNIT_ASSERT_EQUAL(std::string("word_argument"), command->GetWord(1));
 	CPPUNIT_ASSERT_EQUAL(std::string("string argument"), command->GetString(2));
-	CPPUNIT_ASSERT_EQUAL(uint32_t(123), command->GetNumber(3));
+	CPPUNIT_ASSERT_EQUAL(char('a'), command->GetCharacter(3));
+	CPPUNIT_ASSERT_EQUAL(uint32_t(123), command->GetNumber(4));
 
 
 	// parallel arguments at leaf nodes, with depth one

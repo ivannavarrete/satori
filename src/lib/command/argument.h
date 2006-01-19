@@ -19,7 +19,7 @@ public:
 	/**
 	 * @todo Document.
 	 */
-	enum ArgType { Word, String, Number };
+	enum ArgType { Word, String, Character, Number };
 
 	/**
 	 * @todo Document.

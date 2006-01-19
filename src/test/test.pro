@@ -38,7 +38,9 @@ HEADERS += $${SOURCEROOT}/lib/command/command.h \
            $${SOURCEROOT}/lib/command/stringargument.h \
            $${SOURCEROOT}/lib/command/test/stringargumenttest.h \
            $${SOURCEROOT}/lib/command/wordargument.h \
-           $${SOURCEROOT}/lib/command/test/wordargumenttest.h
+           $${SOURCEROOT}/lib/command/test/wordargumenttest.h \
+		   $${SOURCEROOT}/lib/command/characterargument.h \
+		   $${SOURCEROOT}/lib/command/test/characterargumenttest.h
 
 SOURCES += $${SOURCEROOT}/lib/command/command.cpp \
            $${SOURCEROOT}/lib/command/test/commandtest.cpp \
@@ -51,7 +53,9 @@ SOURCES += $${SOURCEROOT}/lib/command/command.cpp \
            $${SOURCEROOT}/lib/command/stringargument.cpp \
            $${SOURCEROOT}/lib/command/test/stringargumenttest.cpp \
            $${SOURCEROOT}/lib/command/wordargument.cpp \
-           $${SOURCEROOT}/lib/command/test/wordargumenttest.cpp
+           $${SOURCEROOT}/lib/command/test/wordargumenttest.cpp \
+		   $${SOURCEROOT}/lib/command/characterargument.cpp \
+		   $${SOURCEROOT}/lib/command/test/characterargumenttest.cpp
 
 
 # Serial test suite
