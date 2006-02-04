@@ -21,7 +21,7 @@ public:
 	bool StringSignalsReceived(unsigned int n);
 
 public slots:
-	void StringSlot(std::string str) { string_signal++; }
+	void StringSlot(std::string /*str*/) { string_signal++; }
 
 private:
 	unsigned int string_signal;

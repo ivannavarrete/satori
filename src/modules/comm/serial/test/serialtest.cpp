@@ -43,8 +43,8 @@ void SerialTest::Destructor() {
 	CPPUNIT_ASSERT_NO_THROW(serial = new Serial("/dev/ttyS1"));
 
 	// connect error signal to the signal catcher
-	QObject::connect(serial, SIGNAL(ErrorSignal(string)),
-					 &signal_catcher, SLOT(StringSlot(string)),
+	QObject::connect(serial, SIGNAL(ErrorSignal(std::string)),
+					 &signal_catcher, SLOT(StringSlot(std::string)),
 					 Qt::DirectConnection);
 
 	// destroy object and check that no signals were received

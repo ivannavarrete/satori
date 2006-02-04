@@ -83,7 +83,7 @@ bool QxMemory::event(QEvent *event) {
 }
 
 
-void QxMemory::paintEvent(QPaintEvent * event) {
+void QxMemory::paintEvent(QPaintEvent * /*event*/) {
 	QString str;
 	QPainter painter(this);
 
