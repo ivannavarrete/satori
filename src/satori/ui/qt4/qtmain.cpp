@@ -37,14 +37,15 @@ int main(int argc, char *argv[]) {
 */
 
 
-int main(int argc, char *argv[]) {
+int ExecQtUI(int &argc, char *argv[]) {
 	QApplication app(argc, argv);
 	QApplication::setStyle(new QxStyle);
 	QApplication::setFont(QFont("courier", 12));
 	QApplication::setKeyboardInputInterval(200);
 
-	QSplashScreen *splash = new QSplashScreen(QPixmap("splash.png"),
-										Qt::WindowStaysOnTopHint);
+	QSplashScreen *splash = new QSplashScreen(
+		QPixmap(app.applicationDirPath()+"/../../src/satori/ui/qt4/splash.png"),
+		Qt::WindowStaysOnTopHint);
 	splash->setFont(QFont("Helvetica", 22, QFont::Bold));
 	splash->show();
 
@@ -59,7 +60,8 @@ int main(int argc, char *argv[]) {
 	QApplication::processEvents();
 
 
-	QPluginLoader loader("../../../modules/comm/serial/libserial.so");
+	QPluginLoader loader(app.applicationDirPath()+
+			"/../modules/comm/serial/libserial.so");
 	QObject *module = loader.instance();
 	if (!module) {
 		qDebug("no serial module or is not a comm provider");

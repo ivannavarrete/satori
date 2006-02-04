@@ -1,7 +1,6 @@
 
 TEMPLATE = app
 CONFIG += qt warn_on
-QT -= gui
 
 DESTDIR = ../../release/bin
 
@@ -9,18 +8,44 @@ SOURCEROOT = ..
 INCLUDEPATH += $${SOURCEROOT}
 
 
+# Misc source files
 HEADERS += $${SOURCEROOT}/lib/tree.h
 
 SOURCES += main.cpp
 
 
 # Architecture-independent text user interface
-HEADERS += ui/txt/txtuiinterface.h \
+HEADERS += ui/txt/txtmain.h \
+           ui/txt/txtuiinterface.h \
            ui/txt/basetxtui.h \
            ui/txt/basecommandtable.h
 
-SOURCES += ui/txt/basetxtui.cpp \
+SOURCES += ui/txt/txtmain.cpp \
+           ui/txt/basetxtui.cpp \
            ui/txt/basecommandtable.cpp
+
+
+# Architecture-independent Qt user interface
+HEADERS += ui/qt4/qtmain.h \
+           ui/qt4/widgets/widgetgallery.h \
+           ui/qt4/widgets/qxmemory.h \
+           ui/qt4/widgets/qxmemorymetrics.h \
+           ui/qt4/qxstyle.h
+
+SOURCES += ui/qt4/qtmain.cpp \
+           ui/qt4/widgets/widgetgallery.cpp \
+           ui/qt4/widgets/qxmemory.cpp \
+           ui/qt4/widgets/qxmemorymetrics.cpp \
+           ui/qt4/qxstyle.cpp
+
+# testing
+HEADERS += $${SOURCEROOT}/satori/memory.h \
+           $${SOURCEROOT}/satori/commandengine.h \
+		   $${SOURCEROOT}/satori/packet.h
+
+SOURCES += $${SOURCEROOT}/satori/memory.cpp \
+           $${SOURCEROOT}/satori/commandengine.cpp \
+		   $${SOURCEROOT}/satori/packet.cpp
 
 
 # Command classes

@@ -1,14 +1,17 @@
 
-#include <QCoreApplication>
-#include <QTimer>
-#include "ui/txt/basetxtui.h"
+#include <iostream>
+#include <cstring>
+#include "ui/txt/txtmain.h"
+#include "ui/qt4/qtmain.h"
 
 
 int main(int argc, char *argv[]) {
-	QCoreApplication app(argc, argv);
+	if (argc == 1)
+		return ExecTxtUI(argc, argv);
 
-	BaseTxtUI base_ui;
-	QTimer::singleShot(0, &base_ui, SLOT(Idle()));
+	if (argc == 2 && strcmp(argv[1], "-g") == 0)
+		return ExecQtUI(argc, argv);
 
-	return app.exec();
+	std::cout << "usage: satori [-g]" << std::endl;
+	return 0;
 }
