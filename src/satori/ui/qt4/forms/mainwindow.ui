@@ -1,0 +1,219 @@
+<ui version="4.0" >
+ <author></author>
+ <comment></comment>
+ <exportmacro></exportmacro>
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>745</width>
+    <height>515</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Satori</string>
+  </property>
+  <widget class="QWidget" name="centralwidget" />
+  <widget class="QMenuBar" name="menubar" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>745</width>
+     <height>33</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu_file" >
+    <property name="title" >
+     <string>&amp;File</string>
+    </property>
+    <addaction name="action_new" />
+    <addaction name="action_open" />
+    <addaction name="separator" />
+    <addaction name="action_save" />
+    <addaction name="action_save_as" />
+    <addaction name="separator" />
+    <addaction name="action_print" />
+    <addaction name="action_print_preview" />
+    <addaction name="separator" />
+    <addaction name="action_quit" />
+   </widget>
+   <widget class="QMenu" name="menu_help" >
+    <property name="title" >
+     <string>&amp;Help</string>
+    </property>
+    <addaction name="action_satori_help" />
+    <addaction name="separator" />
+    <addaction name="action_about_satori" />
+    <addaction name="action_about_qt" />
+   </widget>
+   <widget class="QMenu" name="menu_edit" >
+    <property name="title" >
+     <string>&amp;Edit</string>
+    </property>
+    <addaction name="actionUndo" />
+    <addaction name="actionRedo" />
+    <addaction name="separator" />
+    <addaction name="actionCut" />
+    <addaction name="actionCopy" />
+    <addaction name="actionPaste" />
+    <addaction name="separator" />
+    <addaction name="actionSelect_All" />
+    <addaction name="separator" />
+    <addaction name="actionFind" />
+    <addaction name="actionFind_Next" />
+   </widget>
+   <widget class="QMenu" name="menu_view" >
+    <property name="title" >
+     <string>&amp;View</string>
+    </property>
+    <addaction name="action_Refresh" />
+   </widget>
+   <widget class="QMenu" name="menu_tools" >
+    <property name="title" >
+     <string>&amp;Tools</string>
+    </property>
+    <addaction name="action_preferences" />
+   </widget>
+   <addaction name="menu_file" />
+   <addaction name="menu_edit" />
+   <addaction name="menu_view" />
+   <addaction name="menu_tools" />
+   <addaction name="menu_help" />
+  </widget>
+  <widget class="QStatusBar" name="statusbar" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>489</y>
+     <width>745</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <property name="sizeGripEnabled" >
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QToolBar" name="toolBar" >
+   <property name="orientation" >
+    <enum>Qt::Horizontal</enum>
+   </property>
+   <attribute name="toolBarArea" >
+    <number>4</number>
+   </attribute>
+   <addaction name="action_architecture" />
+  </widget>
+  <action name="action_new" >
+   <property name="text" >
+    <string>&amp;New</string>
+   </property>
+  </action>
+  <action name="action_quit" >
+   <property name="text" >
+    <string>&amp;Quit</string>
+   </property>
+  </action>
+  <action name="action_about_satori" >
+   <property name="text" >
+    <string>&amp;About Satori</string>
+   </property>
+  </action>
+  <action name="action_satori_help" >
+   <property name="text" >
+    <string>Satori Help</string>
+   </property>
+  </action>
+  <action name="action_about_qt" >
+   <property name="text" >
+    <string>About &amp;Qt</string>
+   </property>
+  </action>
+  <action name="action_preferences" >
+   <property name="text" >
+    <string>&amp;Preferences</string>
+   </property>
+  </action>
+  <action name="action_open" >
+   <property name="text" >
+    <string>&amp;Open...</string>
+   </property>
+  </action>
+  <action name="action_save" >
+   <property name="text" >
+    <string>&amp;Save</string>
+   </property>
+  </action>
+  <action name="action_save_as" >
+   <property name="text" >
+    <string>Save &amp;As...</string>
+   </property>
+  </action>
+  <action name="action_print" >
+   <property name="text" >
+    <string>&amp;Print...</string>
+   </property>
+  </action>
+  <action name="action_print_preview" >
+   <property name="text" >
+    <string>P&amp;rint preview</string>
+   </property>
+  </action>
+  <action name="action_architecture" >
+   <property name="text" >
+    <string>Arch</string>
+   </property>
+  </action>
+  <action name="actionUndo" >
+   <property name="text" >
+    <string>&amp;Undo</string>
+   </property>
+  </action>
+  <action name="actionRedo" >
+   <property name="text" >
+    <string>&amp;Redo</string>
+   </property>
+  </action>
+  <action name="actionCut" >
+   <property name="text" >
+    <string>Cut</string>
+   </property>
+  </action>
+  <action name="actionCopy" >
+   <property name="text" >
+    <string>Copy</string>
+   </property>
+  </action>
+  <action name="actionPaste" >
+   <property name="text" >
+    <string>Paste</string>
+   </property>
+  </action>
+  <action name="actionSelect_All" >
+   <property name="text" >
+    <string>Select All</string>
+   </property>
+  </action>
+  <action name="actionFind" >
+   <property name="text" >
+    <string>&amp;Find</string>
+   </property>
+  </action>
+  <action name="actionFind_Next" >
+   <property name="text" >
+    <string>F&amp;ind Next</string>
+   </property>
+  </action>
+  <action name="action_Refresh" >
+   <property name="text" >
+    <string>&amp;Refresh</string>
+   </property>
+  </action>
+ </widget>
+ <pixmapfunction></pixmapfunction>
+ <resources>
+  <include location="../../../resources.qrc" />
+ </resources>
+ <connections/>
+</ui>

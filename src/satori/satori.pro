@@ -8,6 +8,10 @@ SOURCEROOT = ..
 INCLUDEPATH += $${SOURCEROOT}
 
 
+RESOURCES = resources.qrc
+FORMS = ui/qt4/forms/mainwindow.ui
+
+
 # Misc source files
 HEADERS += $${SOURCEROOT}/lib/tree.h
 
@@ -27,12 +31,14 @@ SOURCES += ui/txt/txtmain.cpp \
 
 # Architecture-independent Qt user interface
 HEADERS += ui/qt4/qtmain.h \
+           ui/qt4/qxmainwindow.h \
            ui/qt4/widgets/widgetgallery.h \
            ui/qt4/widgets/qxmemory.h \
            ui/qt4/widgets/qxmemorymetrics.h \
            ui/qt4/qxstyle.h
 
 SOURCES += ui/qt4/qtmain.cpp \
+           ui/qt4/qxmainwindow.cpp \
            ui/qt4/widgets/widgetgallery.cpp \
            ui/qt4/widgets/qxmemory.cpp \
            ui/qt4/widgets/qxmemorymetrics.cpp \
