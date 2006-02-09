@@ -7,7 +7,7 @@
 /**
  * Init the AVR text UI.
  */
-AVRTxtUI::AVRTxtUI() {
+AvrTxtUi::AvrTxtUi() {
 	command_engine = boost::shared_ptr<CommandEngine>(new CommandEngine);
 }
 
@@ -17,7 +17,7 @@ AVRTxtUI::AVRTxtUI() {
  *
  * @param comm					pointer to communication object
  */
-void AVRTxtUI::SetComm(boost::shared_ptr<Comm> comm) {
+void AvrTxtUi::SetComm(boost::shared_ptr<Comm> comm) {
 	command_engine->SetComm(comm);
 }
 
@@ -25,7 +25,7 @@ void AVRTxtUI::SetComm(boost::shared_ptr<Comm> comm) {
 /**
  *
  */
-bool AVRTxtUI::Find(Command &command, const std::string &command_name) const {
+bool AvrTxtUi::Find(Command &command, const std::string &command_name) const {
 	return command_table.Find(command, command_name);
 }
 
@@ -33,7 +33,7 @@ bool AVRTxtUI::Find(Command &command, const std::string &command_name) const {
 /**
  *
  */
-void AVRTxtUI::Exec(const Command &command) {
+void AvrTxtUi::Exec(const Command &command) {
 	switch (command.Type()) {
 	case AVRCommandTable::GetDevice:
 		CommandGetDevice();
@@ -77,7 +77,7 @@ void AVRTxtUI::Exec(const Command &command) {
 /**
  *
  */
-void AVRTxtUI::CommandGetDevice() const {
+void AvrTxtUi::CommandGetDevice() const {
 	std::cout << "GetDevice(): hardcoded device..\n";
 }
 
@@ -87,7 +87,7 @@ void AVRTxtUI::CommandGetDevice() const {
  *
  */
 #include <sstream>
-void AVRTxtUI::CommandSetDevice(const Command &command) {
+void AvrTxtUi::CommandSetDevice(const Command &command) {
 	std::cout << "SetDevice() [" << command.GetWord(1) << "]: hardcoded dev.\n";
 
 	// create memory objects and windows
@@ -132,7 +132,7 @@ void AVRTxtUI::CommandSetDevice(const Command &command) {
 /**
  *
  */
-void AVRTxtUI::CommandGetMemory(const Command &command) {
+void AvrTxtUi::CommandGetMemory(const Command &command) {
 	uint32_t start_addr = command.GetNumber(1);
 	uint32_t end_addr = start_addr + 0x40;
 	if (command.IsValid(2))				// don't use IsValid(2,Argument::Number)
@@ -154,7 +154,7 @@ void AVRTxtUI::CommandGetMemory(const Command &command) {
 /**
  *
  */
-void AVRTxtUI::CommandSetMemory(const Command &command) {
+void AvrTxtUi::CommandSetMemory(const Command &command) {
 	uint32_t start_addr = command.GetNumber(1);
 	const char *data;
 	uint32_t data_size;
@@ -186,7 +186,7 @@ void AVRTxtUI::CommandSetMemory(const Command &command) {
 /**
  *
  */
-void AVRTxtUI::CommandGetState(const Command &command) {
+void AvrTxtUi::CommandGetState(const Command &command) {
 	command.IsValid(0);			// to remove 'unused var' warning
 
 	state->GetState();
@@ -196,7 +196,7 @@ void AVRTxtUI::CommandGetState(const Command &command) {
 /**
  *
  */
-void AVRTxtUI::CommandSetState(const Command &command) {
+void AvrTxtUi::CommandSetState(const Command &command) {
 	command.IsValid(0);			// to remove 'unused var' warning
 }
 
@@ -206,7 +206,7 @@ void AVRTxtUI::CommandSetState(const Command &command) {
  *
  * @param command				Command object holding optional command name.
  */
-void AVRTxtUI::CommandHelp(const Command &command) const {
+void AvrTxtUi::CommandHelp(const Command &command) const {
 	// display long help on specific command
 	if (command.IsValid(1)) {
 		Command help_command("null_command");
@@ -225,4 +225,4 @@ void AVRTxtUI::CommandHelp(const Command &command) const {
 }
 
 
-Q_EXPORT_PLUGIN(AVRTxtUI)
+Q_EXPORT_PLUGIN(AvrTxtUi)

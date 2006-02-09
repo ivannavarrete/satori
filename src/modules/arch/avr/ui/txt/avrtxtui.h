@@ -3,14 +3,12 @@
 #define AVRTXTUI_H
 
 
-#include <QtCore>					// Q_EXPORT_PLUGIN macro
-#include <QObject>
+#include <QtCore>
 #include <string>
-#include <boost/scoped_ptr.hpp>
 #include "avrcommandtable.h"
 #include "lib/command/command.h"
 #include "satori/commandengine.h"
-#include "satori/ui/txt/txtuiinterface.h"
+#include "satori/ui/txt/txtui.h"
 #include "satori/ui/txt/memorytxtwindow.h"
 #include "satori/ui/txt/statetxtwindow.h"
 #include "modules/comm/commuser.h"
@@ -21,13 +19,13 @@
  * It's job is to contain all the UI subobjects and to dispatch user commands
  * to the proper objects for execution.
  */
-class AVRTxtUI : public QObject, public TxtUIInterface, public CommUser {
+class AvrTxtUi : public QObject, public TxtUi, public CommUser {
 	Q_OBJECT
-	Q_INTERFACES(TxtUIInterface)
+	Q_INTERFACES(TxtUi)
 	Q_INTERFACES(CommUser)
 
 public:
-	AVRTxtUI();
+	AvrTxtUi();
 	virtual void SetComm(boost::shared_ptr<Comm> comm);
 	virtual bool Find(Command &command, const std::string &command_name) const;
 	virtual void Exec(const Command &command);

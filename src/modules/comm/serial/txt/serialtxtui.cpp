@@ -19,14 +19,6 @@ SerialTxtUI::SerialTxtUI() {
 /**
  *
  */
-boost::shared_ptr<Comm> SerialTxtUI::GetComm() const {
-	return serial;
-}
-
-
-/**
- *
- */
 bool SerialTxtUI::Find(Command &command, const std::string &command_name) const{
 	return command_table.Find(command, command_name);
 }
@@ -48,6 +40,14 @@ void SerialTxtUI::Exec(const Command &command) {
 		break;
 	}
 
+}
+
+
+/**
+ *
+ */
+boost::shared_ptr<Comm> SerialTxtUI::GetComm() const {
+	return serial;
 }
 
 

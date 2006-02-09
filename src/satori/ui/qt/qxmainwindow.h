@@ -3,7 +3,6 @@
 #define QXMAINWINDOW_H
 
 
-//#include <QCloseEvent>
 #include "ui_mainwindow.h"
 
 
@@ -18,10 +17,12 @@ protected:
 
 private slots:
 	void About();
+	void TestLoadArch();
 
 private:
 	void InitActions();
 	void InitStatusBar();
+
 	void Test();
 };
 

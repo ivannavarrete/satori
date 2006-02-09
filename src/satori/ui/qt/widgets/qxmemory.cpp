@@ -9,7 +9,6 @@
  *
  */
 QxMemory::QxMemory(boost::shared_ptr<Memory> memory, QWidget *parent) : QWidget(parent) {
-	/*
 	// create popup menu
 	popup_menu = new QMenu(this);
 	QAction *action;
@@ -27,7 +26,7 @@ QxMemory::QxMemory(boost::shared_ptr<Memory> memory, QWidget *parent) : QWidget(
 	action = new QAction("Find", popup_menu);
 	connect(action, SIGNAL(triggered()), this, SLOT(Find()));
 	popup_menu->addAction(action);
-	*/
+
 	
 	// grab memory object
 	this->memory = memory;

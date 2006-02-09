@@ -1,13 +1,13 @@
 
-#ifndef TXTUI_H
-#define TXTUI_H
+#ifndef BASETXTUI_H
+#define BASETXTUI_H
 
 
 #include <QObject>
 #include <string>
 #include <boost/shared_ptr.hpp>
 #include <boost/tokenizer.hpp>
-#include "txtuiinterface.h"
+#include "txtui.h"
 #include "basecommandtable.h"
 #include "lib/command/command.h"
 #include "modules/comm/commuser.h"
@@ -21,12 +21,12 @@
  * event handle loop. To be able to start the idle loop we must fire it from
  * a timer, which only works on a QObject.
  */
-class BaseTxtUI : public QObject, public TxtUIInterface {
+class BaseTxtUi : public QObject, public TxtUi {
 	Q_OBJECT
 
 public:
-	BaseTxtUI() : arch_ui(0), comm_user(0), comm_ui(0), comm_provider(0) {}
-	virtual ~BaseTxtUI() {}
+	BaseTxtUi() : arch_ui(0), comm_user(0), comm_ui(0), comm_provider(0) {}
+	virtual ~BaseTxtUi() {}
 
 	virtual bool Find(Command &command, const std::string &command_name) const;
 	virtual void Exec(const Command &command);
@@ -45,10 +45,10 @@ private:
 
 	BaseCommandTable command_table;
 
-	TxtUIInterface *arch_ui;
+	TxtUi *arch_ui;
 	CommUser *comm_user;
 
-	TxtUIInterface *comm_ui;
+	TxtUi *comm_ui;
 	CommProvider *comm_provider;
 };
 

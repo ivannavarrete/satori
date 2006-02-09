@@ -1,16 +1,18 @@
 
+### AVR architecture text module ###
+
 TEMPLATE = lib
 CONFIG += qt plugin warn_on
 QT -= gui
 
-DESTDIR = ../../../../release/modules/arch/avr
+DESTDIR = ../../../../../../release/modules/arch/avr
 
-SOURCEROOT = ../../..
+SOURCEROOT = ../../../../..
 INCLUDEPATH += $${SOURCEROOT}
 
 # force removal of lib (currently not done with 'lib' templates)
-unix:QMAKE_CLEAN = $${DESTDIR}/libavr.so
-win32:QMAKE_CLEAN = $${DESTDIR}/avr.dll
+unix:QMAKE_CLEAN = $${DESTDIR}/libavrtxt.so
+win32:QMAKE_CLEAN = $${DESTDIR}/avrtxt.dll
 
 
 # AVR architecture text UI
@@ -22,7 +24,7 @@ SOURCES += avrtxtui.cpp \
 
 
 # Architecture-independent UI classes
-HEADERS += $${SOURCEROOT}/satori/ui/txt/txtuiinterface.h \
+HEADERS += $${SOURCEROOT}/satori/ui/txt/txtui.h \
            $${SOURCEROOT}/satori/ui/txt/memorytxtwindow.h \
 		   $${SOURCEROOT}/satori/ui/txt/statetxtwindow.h
 

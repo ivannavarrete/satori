@@ -2,7 +2,7 @@
 #include <iostream>
 #include <cstring>
 #include "ui/txt/txtmain.h"
-#include "ui/qt4/qtmain.h"
+#include "ui/qt/qtmain.h"
 
 
 int main(int argc, char *argv[]) {

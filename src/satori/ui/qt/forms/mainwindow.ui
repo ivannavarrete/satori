@@ -49,27 +49,27 @@
     <addaction name="action_about_satori" />
     <addaction name="action_about_qt" />
    </widget>
-   <widget class="QMenu" name="menu_edit" >
-    <property name="title" >
-     <string>&amp;Edit</string>
-    </property>
-    <addaction name="actionUndo" />
-    <addaction name="actionRedo" />
-    <addaction name="separator" />
-    <addaction name="actionCut" />
-    <addaction name="actionCopy" />
-    <addaction name="actionPaste" />
-    <addaction name="separator" />
-    <addaction name="actionSelect_All" />
-    <addaction name="separator" />
-    <addaction name="actionFind" />
-    <addaction name="actionFind_Next" />
-   </widget>
    <widget class="QMenu" name="menu_view" >
     <property name="title" >
      <string>&amp;View</string>
     </property>
-    <addaction name="action_Refresh" />
+    <addaction name="action_refresh" />
+   </widget>
+   <widget class="QMenu" name="menu_edit" >
+    <property name="title" >
+     <string>&amp;Edit</string>
+    </property>
+    <addaction name="action_undo" />
+    <addaction name="action_redo" />
+    <addaction name="separator" />
+    <addaction name="action_cut" />
+    <addaction name="action_copy" />
+    <addaction name="action_paste" />
+    <addaction name="separator" />
+    <addaction name="action_select_all" />
+    <addaction name="separator" />
+    <addaction name="action_find" />
+    <addaction name="action_find_next" />
    </widget>
    <widget class="QMenu" name="menu_tools" >
     <property name="title" >
@@ -165,47 +165,47 @@
     <string>Arch</string>
    </property>
   </action>
-  <action name="actionUndo" >
+  <action name="action_undo" >
    <property name="text" >
     <string>&amp;Undo</string>
    </property>
   </action>
-  <action name="actionRedo" >
+  <action name="action_redo" >
    <property name="text" >
     <string>&amp;Redo</string>
    </property>
   </action>
-  <action name="actionCut" >
+  <action name="action_cut" >
    <property name="text" >
     <string>Cut</string>
    </property>
   </action>
-  <action name="actionCopy" >
+  <action name="action_copy" >
    <property name="text" >
     <string>Copy</string>
    </property>
   </action>
-  <action name="actionPaste" >
+  <action name="action_paste" >
    <property name="text" >
     <string>Paste</string>
    </property>
   </action>
-  <action name="actionSelect_All" >
+  <action name="action_select_all" >
    <property name="text" >
     <string>Select All</string>
    </property>
   </action>
-  <action name="actionFind" >
+  <action name="action_find" >
    <property name="text" >
     <string>&amp;Find</string>
    </property>
   </action>
-  <action name="actionFind_Next" >
+  <action name="action_find_next" >
    <property name="text" >
     <string>F&amp;ind Next</string>
    </property>
   </action>
-  <action name="action_Refresh" >
+  <action name="action_refresh" >
    <property name="text" >
     <string>&amp;Refresh</string>
    </property>
@@ -213,7 +213,7 @@
  </widget>
  <pixmapfunction></pixmapfunction>
  <resources>
-  <include location="../../../resources.qrc" />
+  <include location="../../../../../../../../../tmp/svn_checkout_satori/src/satori/resources.qrc" />
  </resources>
  <connections/>
 </ui>

@@ -1,8 +1,11 @@
 
+#include <QApplication>
 #include <QLabel>
+#include <QDir>
 #include <QMessageBox>
 #include <boost/shared_ptr.hpp>
 #include "qxmainwindow.h"
+#include "satori/ui/qt/qtui.h"
 #include "widgets/qxmemory.h"
 #include "../../memory.h"
 #include "../../commandengine.h"
@@ -24,6 +27,8 @@ void QxMainWindow::InitActions() {
 	// file menu
 	action_quit->setShortcut(QKeySequence(tr("Ctrl+Q", "File|Quit")));
 	connect(action_quit, SIGNAL(triggered()), this, SLOT(close()));
+
+	connect(action_refresh, SIGNAL(triggered()), this, SLOT(TestLoadArch()));
 	
 	// help menu
 	connect(action_about_satori, SIGNAL(triggered()), this, SLOT(About()));
@@ -64,6 +69,28 @@ void QxMainWindow::Test() {
 }
 
 
-void QxMainWindow::closeEvent(QCloseEvent * /*event*/) {
+void QxMainWindow::TestLoadArch() {
+	QDir modules_dir(QApplication::applicationDirPath() + "/../modules/arch");
+	if (!modules_dir.exists()) {
+		QMessageBox::warning(this, tr("Module Load Error"),
+				tr("Unable to find module directory."),
+				QMessageBox::Ok | QMessageBox::Default,
+				QMessageBox::NoButton);
+		return;
+	}
 
+	QPluginLoader loader(modules_dir.absoluteFilePath("avr/libavrqt.so"));
+	QObject *module = loader.instance();
+	if (module) {
+		QtUi *qt_ui = qobject_cast<QtUi *>(module);
+		if (qt_ui) {
+			statusbar->showMessage("Module loaded", 5000);
+			qt_ui->setupUi(this);
+		}
+	}
+}
+
+
+void QxMainWindow::closeEvent(QCloseEvent * /*event*/) {
+	// Sure you want to quit.. Save.. etc...
 }

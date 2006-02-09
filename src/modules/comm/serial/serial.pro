@@ -14,7 +14,7 @@ win32:QMAKE_CLEAN = $${DESTDIR}/serial.dll
 
 
 # Comm independent UI classes
-HEADERS += $${SOURCEROOT}/satori/ui/txt/txtuiinterface.h
+HEADERS += $${SOURCEROOT}/satori/ui/txt/txtui.h
 
 # Serial communication text UI
 HEADERS += txt/serialtxtui.h \

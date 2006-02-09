@@ -9,7 +9,7 @@ INCLUDEPATH += $${SOURCEROOT}
 
 
 RESOURCES = resources.qrc
-FORMS = ui/qt4/forms/mainwindow.ui
+FORMS = ui/qt/forms/mainwindow.ui
 
 
 # Misc source files
@@ -20,7 +20,7 @@ SOURCES += main.cpp
 
 # Architecture-independent text user interface
 HEADERS += ui/txt/txtmain.h \
-           ui/txt/txtuiinterface.h \
+           ui/txt/txtui.h \
            ui/txt/basetxtui.h \
            ui/txt/basecommandtable.h
 
@@ -30,19 +30,18 @@ SOURCES += ui/txt/txtmain.cpp \
 
 
 # Architecture-independent Qt user interface
-HEADERS += ui/qt4/qtmain.h \
-           ui/qt4/qxmainwindow.h \
-           ui/qt4/widgets/widgetgallery.h \
-           ui/qt4/widgets/qxmemory.h \
-           ui/qt4/widgets/qxmemorymetrics.h \
-           ui/qt4/qxstyle.h
+HEADERS += ui/qt/qtmain.h \
+           ui/qt/qtui.h \
+           ui/qt/qxmainwindow.h \
+           ui/qt/widgets/qxmemory.h \
+           ui/qt/widgets/qxmemorymetrics.h \
+           ui/qt/qxstyle.h
 
-SOURCES += ui/qt4/qtmain.cpp \
-           ui/qt4/qxmainwindow.cpp \
-           ui/qt4/widgets/widgetgallery.cpp \
-           ui/qt4/widgets/qxmemory.cpp \
-           ui/qt4/widgets/qxmemorymetrics.cpp \
-           ui/qt4/qxstyle.cpp
+SOURCES += ui/qt/qtmain.cpp \
+           ui/qt/qxmainwindow.cpp \
+           ui/qt/widgets/qxmemory.cpp \
+           ui/qt/widgets/qxmemorymetrics.cpp \
+           ui/qt/qxstyle.cpp
 
 # testing
 HEADERS += $${SOURCEROOT}/satori/memory.h \

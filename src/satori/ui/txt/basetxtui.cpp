@@ -8,12 +8,8 @@
 /**
  * This is the command loop that reads and executes user commands.
  */
-void BaseTxtUI::Idle() {
+void BaseTxtUi::Idle() {
 	std::cout << "] Satori version 0.2\n] Welcome\n]\n";
-
-	//plugins_dir = QDir(QApplication::instance()->applicationDirPath());
-
-	//arch_ui = boost::shared_ptr<TxtUIInterface>(new AVRTxtUI);
 
 	while (true) {
 		// get user input
@@ -80,7 +76,7 @@ void BaseTxtUI::Idle() {
 /**
  *
  */
-bool BaseTxtUI::Find(Command &command, const std::string &command_name) const{
+bool BaseTxtUi::Find(Command &command, const std::string &command_name) const{
 	return command_table.Find(command, command_name);
 }
 
@@ -90,7 +86,7 @@ bool BaseTxtUI::Find(Command &command, const std::string &command_name) const{
  *
  * @param command		command and its arguments
  */
-void BaseTxtUI::Exec(const Command &command) {
+void BaseTxtUi::Exec(const Command &command) {
 	switch (command.Type()) {
 	case (BaseCommandTable::Quit):
 		CommandQuit();
@@ -117,7 +113,7 @@ void BaseTxtUI::Exec(const Command &command) {
 /**
  * Cleanup method that's called when program terminates.
  */
-void BaseTxtUI::CommandQuit() const {
+void BaseTxtUi::CommandQuit() const {
 	QCoreApplication::exit(0);		// stop event processing
 }
 
@@ -125,7 +121,7 @@ void BaseTxtUI::CommandQuit() const {
 /**
  *
  */
-void BaseTxtUI::CommandShowModule() const {
+void BaseTxtUi::CommandShowModule() const {
 	QDir module_dir = QDir(QCoreApplication::applicationDirPath()+"/../modules");
 	if (!module_dir.exists()) {
 		std::cout << "] can't find module directory\n";
@@ -142,10 +138,10 @@ void BaseTxtUI::CommandShowModule() const {
 		std::cout << "] --[ Architecture modules ]--\n";
 		foreach (QString module_name, module_dir.entryList(QDir::Dirs)) {
 			QPluginLoader loader(module_dir.absoluteFilePath(
-						module_name+"/lib"+module_name+".so"));
+						module_name+"/lib"+module_name+"txt.so"));
 			QObject *module = loader.instance();
 			if (module) {
-				TxtUIInterface *mod_if = qobject_cast<TxtUIInterface *>(module);
+				TxtUi *mod_if = qobject_cast<TxtUi *>(module);
 				CommUser *commu_if = qobject_cast<CommUser *>(module);
 				if (mod_if && commu_if)
 					std::cout << "]   " << module_name.toStdString() << "\n";
@@ -164,7 +160,7 @@ void BaseTxtUI::CommandShowModule() const {
 						module_name+"/lib"+module_name+".so"));
 			QObject *module = loader.instance();
 			if (module) {
-				TxtUIInterface *mod_if = qobject_cast<TxtUIInterface *>(module);
+				TxtUi *mod_if = qobject_cast<TxtUi *>(module);
 				CommProvider *commp_if = qobject_cast<CommProvider *>(module);
 				if (mod_if && commp_if)
 					std::cout << "]   " << module_name.toStdString() << "\n";
@@ -184,14 +180,12 @@ void BaseTxtUI::CommandShowModule() const {
  *
  * @todo Find out exceptions thrown.
  */
-void BaseTxtUI::CommandLoadModule(const Command &command) {
+void BaseTxtUi::CommandLoadModule(const Command &command) {
 	const QString module_name(command.GetWord(1).c_str());
 	bool loaded = false;
 
 	// try loading an architecture module
-	QDir modules_dir;
-	modules_dir.setPath(QCoreApplication::applicationDirPath()+
-											"/../modules/arch");
+	QDir modules_dir(QCoreApplication::applicationDirPath()+"/../modules/arch");
 	if (!modules_dir.exists()) {
 		std::cout << "] can't find module directory\n";
 		return;
@@ -203,11 +197,11 @@ void BaseTxtUI::CommandLoadModule(const Command &command) {
 
 		if (module_dir == module_name) {
 			QPluginLoader loader(modules_dir.absoluteFilePath(module_dir +
-											"/lib" + module_name + ".so"));
+											"/lib" + module_name + "txt.so"));
 			QObject *module = loader.instance();
 			if (module) {
 				// load the arch module if it implements both these interfaces
-				arch_ui = qobject_cast<TxtUIInterface *>(module);
+				arch_ui = qobject_cast<TxtUi *>(module);
 				comm_user = qobject_cast<CommUser *>(module);
 				if (arch_ui && comm_user) {
 					loaded = true;
@@ -255,7 +249,7 @@ void BaseTxtUI::CommandLoadModule(const Command &command) {
 			QObject *module = loader.instance();
 			if (module) {
 				// load the comm module if it implements both these interfaces
-				comm_ui = qobject_cast<TxtUIInterface *>(module);
+				comm_ui = qobject_cast<TxtUi *>(module);
 				comm_provider = qobject_cast<CommProvider *>(module);
 				
 				if (comm_ui && comm_provider) {
@@ -288,7 +282,7 @@ void BaseTxtUI::CommandLoadModule(const Command &command) {
  * @Todo If possible, find out the screen geometry at runtime (number of rows),
  * for more precise screen clearing.
  */
-void BaseTxtUI::CommandClearScreen() const {
+void BaseTxtUi::CommandClearScreen() const {
 	std::cout << "]\n]\n]\n]\n]\n]\n]\n]\n]\n]\n]\n]\n]\n]\n]\n]\n]\n"
 				 "]\n]\n]\n]\n]\n]\n]\n]\n]\n]\n]\n]\n]\n]\n]\n]\n]\n"
 				 "]\n]\n]\n]\n]\n]\n]\n]\n]\n]\n]\n]\n]\n]\n]\n]\n]\n";
@@ -300,7 +294,7 @@ void BaseTxtUI::CommandClearScreen() const {
  *
  * @param command				Command object holding optional command name
  */
-void BaseTxtUI::CommandHelp(const Command &command) const {
+void BaseTxtUi::CommandHelp(const Command &command) const {
 	// display long help on specific command
 	if (command.IsValid(1)) {
 		Command help_command("null_command");
@@ -332,7 +326,7 @@ void BaseTxtUI::CommandHelp(const Command &command) const {
  * Fallback method for all commands that are in the command table but not
  * implemented.
  */
-void BaseTxtUI::CommandUnknown() const {
+void BaseTxtUi::CommandUnknown() const {
 	std::cout << "] unimplemented command" << std::endl;
 }
 
@@ -342,6 +336,6 @@ void BaseTxtUI::CommandUnknown() const {
  *
  * @param reason				short description of error
  */
-void BaseTxtUI::SyntaxError(const std::string &reason) const {
+void BaseTxtUi::SyntaxError(const std::string &reason) const {
 	std::cout << "] syntax error: " << reason << std::endl;
 }
