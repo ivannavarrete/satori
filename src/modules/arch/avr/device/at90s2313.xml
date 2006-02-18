@@ -1,0 +1,6 @@
+<Device name="AT90S2313">
+	<Description text="Foo Bar!"/>
+	<Memory name="SRAM" start="0x60" end="0x25F"/>
+	<Memory name="EEPROM" start="0x0" end="0x1FF"/>
+	<Memory name="FLASH" start="0x0" end="0xFFF"/>
+</Device>

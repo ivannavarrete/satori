@@ -54,7 +54,7 @@ Serial::Serial(const std::string &device_name) {
 
 
 /**
- * Flush, restore and close serial port.
+ * Flush, restore and close serial device.
  *
  * @signal ErrorSignal(string)	if there was an error flushing, restoring mode,
  * 								or closing the device.
@@ -308,33 +308,24 @@ void Serial::SetStopBits(const unsigned int stop_bits) {
  * @throws std::runtime_error	This exception is thrown if the specific device
  * 								configuration mode is not supported.
  *
- * @todo Fix the configuration of transfer format, instead of relying on the
- * cfmakeraw() workaround.
+ * It seems that the issue os setting the device mode without using cfmakeraw()
+ * keeps reappearing. As far as I can tell it depend on whether cfmakeraw() was
+ * run previously in which case subsequent runs of the program work even without
+ * it. On a fresh boot the mode will not be set properly without cfmakeraw().
  */
 void Serial::SetMode(struct termios &new_mode) {
-	/*
-	// set transfer format (data and stop bits) and default control mode
-	//cfmakeraw(&term1);
-	term1.c_iflag |= IGNBRK | IGNPAR;
-	////term1.c_iflag &= ~(IGNBRK);
-	////term1.c_oflag &= ~(OPOST);
-	term1.c_cflag |= (CREAD | CLOCAL | dbitsf | sbitsf);
-	term1.c_lflag &= ~(ECHO|ECHONL|ICANON|ISIG|IEXTEN);
-
-	// update mode
-	if (tcsetattr(dev, TCSAFLUSH, &new_mode) < 0)
-		return false;
-	if (tcgetattr(dev, &term2) < 0)
-		return false;
-	if (!TermiosCompare(term1, term2))
-		return false;
-	*/
+	// set default mode parameters
+	// disable implementation defined output processing
+	// new_mode.c_oflag &= ~OPOST;
 	
-	//*
-	//cfmakeraw(&new_mode);
+	// set mode
 	if (tcsetattr(dev, TCSADRAIN, &new_mode))
 		throw std::runtime_error("Can't set device mode");
-	//*/
+
+	struct termios temp_mode;
+	tcgetattr(dev, &temp_mode);	// if this fails then compare also likely? fails
+	if (!TermiosCompare(temp_mode, new_mode))
+		throw std::runtime_error("Can't set device mode");
 
 	// update local copy of device mode
 	memcpy(&mode, &new_mode, sizeof(struct termios));

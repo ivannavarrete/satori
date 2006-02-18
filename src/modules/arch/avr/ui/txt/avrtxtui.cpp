@@ -1,15 +1,7 @@
 
 #include <iostream>
 #include "avrtxtui.h"
-//#include "memory.h"
-
-
-/**
- * Init the AVR text UI.
- */
-AvrTxtUi::AvrTxtUi() {
-	command_engine = boost::shared_ptr<CommandEngine>(new CommandEngine);
-}
+#include "../../avrdevice.h"
 
 
 /**
@@ -18,7 +10,9 @@ AvrTxtUi::AvrTxtUi() {
  * @param comm					pointer to communication object
  */
 void AvrTxtUi::SetComm(boost::shared_ptr<Comm> comm) {
-	command_engine->SetComm(comm);
+	this->comm = comm;
+	if (avr_device)
+		avr_device->SetComm(comm);
 }
 
 
@@ -75,57 +69,55 @@ void AvrTxtUi::Exec(const Command &command) {
 
 
 /**
- *
+ * Display information about the currently loaded device.
  */
 void AvrTxtUi::CommandGetDevice() const {
-	std::cout << "GetDevice(): hardcoded device..\n";
+	if (!DeviceLoaded())
+		return;
+
+	std::cout << "] device: " << avr_device->Name() << std::endl;
 }
 
 
 
 /**
+ * Load a new device. If the method fails the old device (if any) is kept.
  *
+ * @param command				Command object holding device name
  */
-#include <sstream>
 void AvrTxtUi::CommandSetDevice(const Command &command) {
-	std::cout << "SetDevice() [" << command.GetWord(1) << "]: hardcoded dev.\n";
-
-	// create memory objects and windows
-	boost::shared_ptr<Memory> memory;
-	uint32_t start_addr;
-	uint32_t end_addr;
-
-	start_addr = 0x60;
-	end_addr = 0x25F;
-	memory = boost::shared_ptr<Memory>(new Memory(Memory::SRAM, start_addr,
-												end_addr, command_engine));
-	sram = boost::shared_ptr<MemoryTxtWindow>(new MemoryTxtWindow(memory));
-	
-	start_addr = 0x0;
-	end_addr = 0x1FF;
-	memory = boost::shared_ptr<Memory>(new Memory(Memory::EEPROM, start_addr,
-												end_addr, command_engine));
-	eeprom = boost::shared_ptr<MemoryTxtWindow>(new MemoryTxtWindow(memory));
-	
-	start_addr = 0x0;
-	end_addr = 0xFFF;
-	memory = boost::shared_ptr<Memory>(new Memory(Memory::FLASH, start_addr,
-												end_addr, command_engine));
-	flash = boost::shared_ptr<MemoryTxtWindow>(new MemoryTxtWindow(memory));
-
-	// create state object and window.. the order of creation of the state map
-	// is important and should mirror the state structure in monitor.asm
-	std::vector<StateEntry> state_map;
-	for (unsigned int i=0; i<32; i++) {
-		std::ostringstream reg_name;
-		reg_name << "r" << i;
-		state_map.push_back(StateEntry(reg_name.str(), 1));
+	// create a new device
+	try {
+		boost::shared_ptr<AvrDevice> new_device
+				(new AvrDevice(command.GetWord(1)));
+		avr_device = new_device;
+	} catch (std::runtime_error &e) {
+		std::cout << "] failed loading device [" << command.GetWord(1) <<
+					 "]: " << e.what() << std::endl;
+		return;
 	}
-	state_map.push_back(StateEntry("PC", 2));
-	state_map.push_back(StateEntry("SP", 2));
-	state_map.push_back(StateEntry("SREG", 1));
-	boost::shared_ptr<State> s(new State(state_map, command_engine));
-	state = boost::shared_ptr<StateTxtWindow>(new StateTxtWindow(s));
+
+	// set the Comm object to use, or keep the default one
+	if (comm)
+		avr_device->SetComm(comm);
+
+	// create views for the new device
+	sram = boost::shared_ptr<MemoryTxtWindow>
+			(new MemoryTxtWindow(avr_device->Sram()));
+	
+	eeprom = boost::shared_ptr<MemoryTxtWindow>
+			(new MemoryTxtWindow(avr_device->Eeprom()));
+	
+	flash = boost::shared_ptr<MemoryTxtWindow>
+			(new MemoryTxtWindow(avr_device->Flash()));
+
+	//io = boost::shared_ptr<IoTxtWindow>
+	//		(new IoTxtWindow(avr_device->Io()));
+
+	state = boost::shared_ptr<StateTxtWindow>
+			(new StateTxtWindow(avr_device->State_()));
+
+	std::cout << "] device loaded: " << avr_device->Name() << std::endl;
 }
 
 
@@ -133,8 +125,11 @@ void AvrTxtUi::CommandSetDevice(const Command &command) {
  *
  */
 void AvrTxtUi::CommandGetMemory(const Command &command) {
+	if (!DeviceLoaded())
+		return;
+
 	uint32_t start_addr = command.GetNumber(1);
-	uint32_t end_addr = start_addr + 0x40;
+	uint32_t end_addr = start_addr + 0x3F;
 	if (command.IsValid(2))				// don't use IsValid(2,Argument::Number)
 		end_addr = command.GetNumber(2);
 	
@@ -155,6 +150,9 @@ void AvrTxtUi::CommandGetMemory(const Command &command) {
  *
  */
 void AvrTxtUi::CommandSetMemory(const Command &command) {
+	if (!DeviceLoaded())
+		return;
+
 	uint32_t start_addr = command.GetNumber(1);
 	const char *data;
 	uint32_t data_size;
@@ -186,8 +184,9 @@ void AvrTxtUi::CommandSetMemory(const Command &command) {
 /**
  *
  */
-void AvrTxtUi::CommandGetState(const Command &command) {
-	command.IsValid(0);			// to remove 'unused var' warning
+void AvrTxtUi::CommandGetState(const Command & /* command */) {
+	if (!DeviceLoaded())
+		return;
 
 	state->GetState();
 }
@@ -196,15 +195,16 @@ void AvrTxtUi::CommandGetState(const Command &command) {
 /**
  *
  */
-void AvrTxtUi::CommandSetState(const Command &command) {
-	command.IsValid(0);			// to remove 'unused var' warning
+void AvrTxtUi::CommandSetState(const Command & /* command */) {
+	if (!DeviceLoaded())
+		return;
 }
 
 
 /**
  * Display help.
  *
- * @param command				Command object holding optional command name.
+ * @param command				Command object holding optional command name
  */
 void AvrTxtUi::CommandHelp(const Command &command) const {
 	// display long help on specific command
@@ -222,6 +222,22 @@ void AvrTxtUi::CommandHelp(const Command &command) const {
 			std::cout << (*command_i)->ShortDescription();
 		}
 	}
+}
+
+
+/**
+ * Check whether a device is loaded. This method is used by all the command
+ * methods that require a device to be loaded in order to function.
+ *
+ * @returns						True if a device is loaded, false otherwise.
+ */
+bool AvrTxtUi::DeviceLoaded() const {
+	if (!avr_device) {
+		std::cout << "] no device loaded" << std::endl;
+		return false;
+	}
+
+	return true;
 }
 
 

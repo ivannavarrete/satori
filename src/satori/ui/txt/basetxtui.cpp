@@ -205,23 +205,13 @@ void BaseTxtUi::CommandLoadModule(const Command &command) {
 				comm_user = qobject_cast<CommUser *>(module);
 				if (arch_ui && comm_user) {
 					loaded = true;
-					std::cout << "] loading architecture module: "
+					std::cout << "] architecture module loaded: "
 						 	  << module_name.toStdString() << "\n";
 
 					// if a comm module is already loaded then we get it's Comm
 					// object and pass it to the newly loaded arch module
-					if (comm_provider) {
-						std::cout << "] setting comm\n";
+					if (comm_provider)
 						comm_user->SetComm(comm_provider->GetComm());
-					}
-
-					/// @todo Replace this with proper device loading
-					if (command.IsValid(1)) {
-						Command cmd("null_command");
-						arch_ui->Find(cmd, "device");
-						cmd.ParseArguments("device " + command.GetWord(1));
-						arch_ui->Exec(cmd);
-					}
 				} else {
 					arch_ui = NULL;
 					comm_user = NULL;
@@ -254,15 +244,13 @@ void BaseTxtUi::CommandLoadModule(const Command &command) {
 				
 				if (comm_ui && comm_provider) {
 					loaded = true;
-					std::cout << "] loading communication module: "
+					std::cout << "] communication module loaded: "
 							  << module_name.toStdString() << "\n";
 
 					// if an arch module is already loaded then we set it's Comm
 					// object with the one from the newly loaded comm module
-					if (comm_user) {
-						std::cout << "] setting comm 2\n";
+					if (comm_user)
 						comm_user->SetComm(comm_provider->GetComm());
-					}
 				} else {
 					comm_ui = NULL;
 					comm_provider = NULL;
@@ -272,7 +260,8 @@ void BaseTxtUi::CommandLoadModule(const Command &command) {
 	}
 
 	if (!loaded)
-		std::cout << "] module not found\n";
+		std::cout << "] failed loading module [" << command.GetWord(1)
+				  << "]: module not found" << std::endl;
 }
 
 

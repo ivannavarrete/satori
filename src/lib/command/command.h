@@ -53,7 +53,7 @@ public:
 	const std::string &ShortDescription() const { return short_description; }
 	const std::string &LongDescription() const { return long_description; }
 
-	unsigned int ArgumentCount() const { return argument_path.size(); }
+	unsigned int ArgumentCount() const { return argument_path.size()-1; }
 	bool IsValid(const unsigned int i) const;
 	bool IsValid(const unsigned int i, const int type) const;
 	uint32_t GetNumber(const unsigned int i) const;

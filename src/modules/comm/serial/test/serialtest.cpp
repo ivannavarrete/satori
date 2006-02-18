@@ -58,7 +58,7 @@ void SerialTest::SetBaud() {
 	Serial *serial = NULL;
 	unsigned int baud_rates[] = { 50, 75, 110, 134, 150, 200, 300, 600, 1200,
 								  1800, 2400, 4800, 9600, 19200, 38400, 57600,
-								  115200, 230400, 0};
+								  115200, /* 230400 */ 0};
 
 	// create serial object
 	CPPUNIT_ASSERT_NO_THROW(serial = new Serial("/dev/ttyS1"));

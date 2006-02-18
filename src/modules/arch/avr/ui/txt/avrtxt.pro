@@ -4,23 +4,38 @@
 TEMPLATE = lib
 CONFIG += qt plugin warn_on
 QT -= gui
+QT += xml
 
 DESTDIR = ../../../../../../release/modules/arch/avr
 
 SOURCEROOT = ../../../../..
+MODULEROOT = ../..
 INCLUDEPATH += $${SOURCEROOT}
 
+
+# copy device files into release dir after compile, and remove after clean
+QMAKE_POST_LINK += cp $${MODULEROOT}/device/* $${DESTDIR}/device/
+QMAKE_CLEAN = $${DESTDIR}/device/*
+
+
 # force removal of lib (currently not done with 'lib' templates)
-unix:QMAKE_CLEAN = $${DESTDIR}/libavrtxt.so
-win32:QMAKE_CLEAN = $${DESTDIR}/avrtxt.dll
+unix:QMAKE_CLEAN += $${DESTDIR}/libavrtxt.so
+win32:QMAKE_CLEAN += $${DESTDIR}/avrtxt.dll
 
 
-# AVR architecture text UI
-HEADERS += avrtxtui.h \
-           avrcommandtable.h
+# Architecture-dependent UI classes
+HEADERS += $${MODULEROOT}/ui/txt/avrtxtui.h \
+           $${MODULEROOT}/ui/txt/avrcommandtable.h
 
-SOURCES += avrtxtui.cpp \
-           avrcommandtable.cpp
+SOURCES += $${MODULEROOT}/ui/txt/avrtxtui.cpp \
+           $${MODULEROOT}/ui/txt/avrcommandtable.cpp
+
+# Architecture-dependent device classes
+HEADERS += $${MODULEROOT}/avrdevice.h \
+           $${MODULEROOT}/avrdeviceinfo.h
+
+SOURCES += $${MODULEROOT}/avrdevice.cpp \
+           $${MODULEROOT}/avrdeviceinfo.cpp
 
 
 # Architecture-independent UI classes

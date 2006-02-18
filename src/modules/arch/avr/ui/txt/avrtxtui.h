@@ -6,6 +6,7 @@
 #include <QtCore>
 #include <string>
 #include "avrcommandtable.h"
+#include "../../avrdevice.h"
 #include "lib/command/command.h"
 #include "satori/commandengine.h"
 #include "satori/ui/txt/txtui.h"
@@ -16,7 +17,7 @@
 
 /**
  * This class implements a text user interface for the AVR architecture module.
- * It's job is to contain all the UI subobjects and to dispatch user commands
+ * It's job is to contain all the UI view objects and to dispatch user commands
  * to the proper objects for execution.
  */
 class AvrTxtUi : public QObject, public TxtUi, public CommUser {
@@ -25,7 +26,6 @@ class AvrTxtUi : public QObject, public TxtUi, public CommUser {
 	Q_INTERFACES(CommUser)
 
 public:
-	AvrTxtUi();
 	virtual void SetComm(boost::shared_ptr<Comm> comm);
 	virtual bool Find(Command &command, const std::string &command_name) const;
 	virtual void Exec(const Command &command);
@@ -39,9 +39,16 @@ private:
 	void CommandSetState(const Command &command);
 	void CommandHelp(const Command &command) const;
 
+	bool DeviceLoaded() const;
+
 	AVRCommandTable command_table;
 
-	boost::shared_ptr<CommandEngine> command_engine;
+	// It is a little ugly to keep a reference here to the Comm object that a
+	// device uses for communication. We do it anyway because it is possible
+	// for this UI to be loaded but without containing any device. In this way
+	// a device can be loaded later and use the latest set Comm object.
+	boost::shared_ptr<Comm> comm;
+	boost::shared_ptr<AvrDevice> avr_device;
 
 	boost::shared_ptr<MemoryTxtWindow> sram;
 	boost::shared_ptr<MemoryTxtWindow> eeprom;

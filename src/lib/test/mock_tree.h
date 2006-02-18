@@ -31,8 +31,8 @@ public:
  */
 template <typename NodeObject>
 bool mock_tree<NodeObject>::child_added(const NodeObject &object) const {
-	for (const_child_iterator child_tree_i=child_begin();
-		 child_tree_i!=child_end(); ++child_tree_i) {
+	for (const_child_iterator child_tree_i=tree<NodeObject>::child_begin();
+		 child_tree_i!=tree<NodeObject>::child_end(); ++child_tree_i) {
 		if ((*child_tree_i).value() == object)
 			return true;
 	}
