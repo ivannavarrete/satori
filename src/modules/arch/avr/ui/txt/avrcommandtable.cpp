@@ -24,6 +24,19 @@ AVRCommandTable::AVRCommandTable() {
 	command_table.push_back(command);
 
 
+	// c <start_addr> [end_addr]
+	command = boost::shared_ptr<Command>(new Command("c", GetCode,
+"]   c <start_addr> [end_addr]             show disassembled code\n",
+"]   c <start_addr>                        display ??? lines of code\n"
+"]   c <start_addr> <end_addr>             disassemble memory starting at\n"
+"]                                         <start_addr> and ending at <end_addr>\n"));
+	argument_list.clear();
+	argument_list.push_back(boost::shared_ptr<Argument>(new NumberArgument));
+	argument_list.push_back(boost::shared_ptr<Argument>(new NumberArgument(
+													Argument::Optional)));
+	command->AddArguments(argument_list);
+	command_table.push_back(command);
+
 	// ds <start_addr> [end_addr | string | array]
 	command = boost::shared_ptr<Command>(new Command("ds", GetSRAM,
 "]   ds <start_addr> [end_addr | string ]  get/set SRAM memory\n",

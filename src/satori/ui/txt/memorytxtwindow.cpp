@@ -23,11 +23,8 @@ void MemoryTxtWindow::Read(uint32_t start_addr, uint32_t end_addr) {
 		(end_addr < memory->Start()))
 		return;
 
-	if (start_addr < memory->Start())
-		start_addr = memory->Start();
-
-	if (end_addr > memory->End())
-		end_addr = memory->End();
+	start_addr = std::max(start_addr, memory->Start());
+	end_addr = std::min(end_addr, memory->End());
 
 	// read and display data in chunks of buffer size
 	uint32_t data_size = end_addr - start_addr + 1;

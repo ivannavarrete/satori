@@ -141,9 +141,9 @@ void BaseTxtUi::CommandShowModule() const {
 						module_name+"/lib"+module_name+"txt.so"));
 			QObject *module = loader.instance();
 			if (module) {
-				TxtUi *mod_if = qobject_cast<TxtUi *>(module);
-				CommUser *commu_if = qobject_cast<CommUser *>(module);
-				if (mod_if && commu_if)
+				TxtUi *ui_if = qobject_cast<TxtUi *>(module);
+				CommUser *commuser_if = qobject_cast<CommUser *>(module);
+				if (ui_if && commuser_if)
 					std::cout << "]   " << module_name.toStdString() << "\n";
 
 				if (!loader.unload())
@@ -160,9 +160,9 @@ void BaseTxtUi::CommandShowModule() const {
 						module_name+"/lib"+module_name+".so"));
 			QObject *module = loader.instance();
 			if (module) {
-				TxtUi *mod_if = qobject_cast<TxtUi *>(module);
-				CommProvider *commp_if = qobject_cast<CommProvider *>(module);
-				if (mod_if && commp_if)
+				TxtUi *ui_if = qobject_cast<TxtUi *>(module);
+				CommProvider *commprov_if = qobject_cast<CommProvider*>(module);
+				if (ui_if && commprov_if)
 					std::cout << "]   " << module_name.toStdString() << "\n";
 
 				if (!loader.unload())

@@ -1,6 +1,8 @@
 
 #include "avrdevice.h"
 #include "avrdeviceinfo.h"
+#include "avrdisasmengine.h"
+#include "satori/disasmengine.h"
 #include "satori/commandengine.h"
 
 
@@ -15,10 +17,11 @@
  * @Todo Change to another (custom, XML) exception.
  */
 AvrDevice::AvrDevice(const std::string &device_name) : name(device_name) {
+	AvrDeviceInfo device_info(device_name);
+
 	// @Bug We *MUST* create a CommandEngine with a valid Comm object
 	command_engine = boost::shared_ptr<CommandEngine>(new CommandEngine);
-
-	AvrDeviceInfo device_info(device_name);
+	boost::shared_ptr<DisasmEngine> disasm_engine(new AvrDisasmEngine);
 
 	uint32_t start_addr;
 	uint32_t end_addr;
@@ -35,12 +38,20 @@ AvrDevice::AvrDevice(const std::string &device_name) : name(device_name) {
 	flash = boost::shared_ptr<Memory>(new Memory(Memory::FLASH, start_addr,
 												end_addr, command_engine));
 
+	code = boost::shared_ptr<Code>(new Code(flash, disasm_engine));
+
+
 	std::vector<StateEntry> state_map;
 	device_info.StateMap(&state_map);
 	state = boost::shared_ptr<State>(new State(state_map, command_engine));
 }
 
 
+/**
+ * Change Comm object of the command engine.
+ *
+ * @param comm					Comm object to change to.
+ */
 void AvrDevice::SetComm(boost::shared_ptr<Comm> comm) {
 	command_engine->SetComm(comm);
 }

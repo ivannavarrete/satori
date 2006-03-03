@@ -13,6 +13,12 @@
 class Comm {
 public:
 	/**
+	 * There is no need for a virtual destructor in an interface class but
+	 * some compilers generate warnings without it.
+	 */
+	virtual ~Comm() {}
+
+	/**
 	 * Send data to the programmer.
 	 *
 	 * @param data					pointer to data buffer

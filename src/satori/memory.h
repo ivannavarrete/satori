@@ -19,7 +19,7 @@ public:
 
 	Memory(const Type memory_type, const uint32_t start, const uint32_t end,
 							boost::shared_ptr<CommandEngine> command_engine);
-	~Memory();
+
 	uint32_t Read(uint32_t start_addr, uint32_t end_addr, char *data);
 	int Write(uint32_t start_addr, uint32_t end_addr, const char *data);
 	//uint32_t Search(const uint32_t start_addr, const uint32_t end_addr,

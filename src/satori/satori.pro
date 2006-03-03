@@ -33,24 +33,11 @@ SOURCES += ui/txt/txtmain.cpp \
 HEADERS += ui/qt/qtmain.h \
            ui/qt/qtui.h \
            ui/qt/qxmainwindow.h \
-           ui/qt/widgets/qxmemory.h \
-           ui/qt/widgets/qxmemorymetrics.h \
            ui/qt/qxstyle.h
 
 SOURCES += ui/qt/qtmain.cpp \
            ui/qt/qxmainwindow.cpp \
-           ui/qt/widgets/qxmemory.cpp \
-           ui/qt/widgets/qxmemorymetrics.cpp \
            ui/qt/qxstyle.cpp
-
-# testing
-HEADERS += $${SOURCEROOT}/satori/memory.h \
-           $${SOURCEROOT}/satori/commandengine.h \
-		   $${SOURCEROOT}/satori/packet.h
-
-SOURCES += $${SOURCEROOT}/satori/memory.cpp \
-           $${SOURCEROOT}/satori/commandengine.cpp \
-		   $${SOURCEROOT}/satori/packet.cpp
 
 
 # Command classes

@@ -7,12 +7,13 @@
 #include <boost/shared_ptr.hpp>
 #include "satori/memory.h"
 #include "satori/state.h"
+#include "satori/code.h"
 
 
 /**
  * This class represents a high level model of an AVR device. It does not have
  * much functionality itself but instead serves as a contaner for the device
- * subsystems (memory, io, state, etc). It also has the ability to 
+ * subsystems (memory, io, state, etc).
  */
 class AvrDevice {
 public:
@@ -24,6 +25,7 @@ public:
 	const boost::shared_ptr<Memory> Eeprom() const { return eeprom; }
 	const boost::shared_ptr<Memory> Flash() const { return flash; }
 	const boost::shared_ptr<State> State_() const { return state; }
+	const boost::shared_ptr<Code> Code_() const { return code; }
 
 private:
 	std::string name;
@@ -33,6 +35,7 @@ private:
 	boost::shared_ptr<Memory> flash;
 	//boost::shared_ptr<Io> io;
 	boost::shared_ptr<State> state;
+	boost::shared_ptr<Code> code;
 
 	boost::shared_ptr<CommandEngine> command_engine;
 };

@@ -23,6 +23,34 @@ unix:QMAKE_CLEAN += $${DESTDIR}/libavrtxt.so
 win32:QMAKE_CLEAN += $${DESTDIR}/avrtxt.dll
 
 
+# Architecture-dependent device classes
+HEADERS += $${MODULEROOT}/avrdevice.h \
+           $${MODULEROOT}/avrdeviceinfo.h \
+           $${MODULEROOT}/avrdisasmengine.h \
+           $${MODULEROOT}/opcodetable.h
+
+SOURCES += $${MODULEROOT}/avrdevice.cpp \
+           $${MODULEROOT}/avrdeviceinfo.cpp \
+           $${MODULEROOT}/avrdisasmengine.cpp \
+           $${MODULEROOT}/opcodetable.cpp
+
+
+# Architecture-independent device classes
+HEADERS += $${SOURCEROOT}/satori/code.h \
+           $${SOURCEROOT}/satori/memory.h \
+           $${SOURCEROOT}/satori/state.h \
+           $${SOURCEROOT}/satori/commandengine.h \
+		   $${SOURCEROOT}/satori/packet.h \
+		   $${SOURCEROOT}/satori/disasmengine.h \
+		   $${SOURCEROOT}/satori/dinstruction.h
+
+SOURCES += $${SOURCEROOT}/satori/code.cpp \
+           $${SOURCEROOT}/satori/memory.cpp \
+           $${SOURCEROOT}/satori/state.cpp \
+           $${SOURCEROOT}/satori/commandengine.cpp \
+		   $${SOURCEROOT}/satori/packet.cpp
+
+
 # Architecture-dependent UI classes
 HEADERS += $${MODULEROOT}/ui/txt/avrtxtui.h \
            $${MODULEROOT}/ui/txt/avrcommandtable.h
@@ -30,33 +58,16 @@ HEADERS += $${MODULEROOT}/ui/txt/avrtxtui.h \
 SOURCES += $${MODULEROOT}/ui/txt/avrtxtui.cpp \
            $${MODULEROOT}/ui/txt/avrcommandtable.cpp
 
-# Architecture-dependent device classes
-HEADERS += $${MODULEROOT}/avrdevice.h \
-           $${MODULEROOT}/avrdeviceinfo.h
-
-SOURCES += $${MODULEROOT}/avrdevice.cpp \
-           $${MODULEROOT}/avrdeviceinfo.cpp
-
 
 # Architecture-independent UI classes
 HEADERS += $${SOURCEROOT}/satori/ui/txt/txtui.h \
+           $${SOURCEROOT}/satori/ui/txt/codetxtwindow.h \
            $${SOURCEROOT}/satori/ui/txt/memorytxtwindow.h \
 		   $${SOURCEROOT}/satori/ui/txt/statetxtwindow.h
 
-SOURCES += $${SOURCEROOT}/satori/ui/txt/memorytxtwindow.cpp \
+SOURCES += $${SOURCEROOT}/satori/ui/txt/codetxtwindow.cpp \
+           $${SOURCEROOT}/satori/ui/txt/memorytxtwindow.cpp \
            $${SOURCEROOT}/satori/ui/txt/statetxtwindow.cpp
-
-
-# Architecture-independent device classes
-HEADERS += $${SOURCEROOT}/satori/memory.h \
-           $${SOURCEROOT}/satori/state.h \
-           $${SOURCEROOT}/satori/commandengine.h \
-		   $${SOURCEROOT}/satori/packet.h
-
-SOURCES += $${SOURCEROOT}/satori/memory.cpp \
-           $${SOURCEROOT}/satori/state.cpp \
-           $${SOURCEROOT}/satori/commandengine.cpp \
-		   $${SOURCEROOT}/satori/packet.cpp
 
 
 # Command classes

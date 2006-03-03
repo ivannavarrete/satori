@@ -39,16 +39,6 @@ Memory::Memory(const Type memory_type, const uint32_t start, const uint32_t end,
 
 
 /**
- * Destroy memory object.
- */
-Memory::~Memory() {
-/*
-	delete [] cache;
-*/
-}
-
-
-/**
  * Read target memory. This function reads data from the internal cache if
  * possible.
  * 
@@ -67,11 +57,8 @@ uint32_t Memory::Read(uint32_t start_addr, uint32_t end_addr, char *data) {
 	if ((start_addr > end_addr) || (start_addr > end) || (end_addr < start))
 		return 0;
 
-	if (start_addr < start)
-		start_addr = start;
-
-	if (end_addr > end)
-		end_addr = end;
+	start_addr = std::max(start_addr, start);
+	end_addr = std::min(end_addr, end);
 
 	// create some convenience variables
 	uint32_t data_size = end_addr - start_addr + 1;
@@ -166,11 +153,8 @@ int Memory::Write(uint32_t start_addr, uint32_t end_addr, const char *data) {
 	if ((start_addr > end_addr) || (end_addr > end) || (start_addr < start))
 		return 0;
 
-	if (start_addr < start)
-		start_addr = start;
-
-	if (end_addr > end)
-		end_addr = end;
+	start_addr = std::max(start_addr, start);
+	end_addr = std::min(end_addr, end);
 
 	// write to target memory
 	uint32_t data_size = end_addr - start_addr + 1;

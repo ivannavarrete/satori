@@ -12,6 +12,7 @@
 #include "satori/ui/txt/txtui.h"
 #include "satori/ui/txt/memorytxtwindow.h"
 #include "satori/ui/txt/statetxtwindow.h"
+#include "satori/ui/txt/codetxtwindow.h"
 #include "modules/comm/commuser.h"
 
 
@@ -33,6 +34,7 @@ public:
 private:
 	void CommandGetDevice() const;
 	void CommandSetDevice(const Command &command);
+	void CommandGetCode(const Command &command);
 	void CommandGetMemory(const Command &command);
 	void CommandSetMemory(const Command &command);
 	void CommandGetState(const Command &command);
@@ -55,7 +57,7 @@ private:
 	boost::shared_ptr<MemoryTxtWindow> flash;
 	boost::shared_ptr<StateTxtWindow> state;
 	//boost::shared_ptr<IOTxtWindow> io;
-	//boost::shared_ptr<CodeTxtWindow> code;
+	boost::shared_ptr<CodeTxtWindow> code;
 };
 
 

@@ -21,6 +21,7 @@ public:
 		SetEEPROM = 106,
 		GetState = 107,
 		SetState = 108,
+		GetCode = 109,
 		Help = 199
 	};
 

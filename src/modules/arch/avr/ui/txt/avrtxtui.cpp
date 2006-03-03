@@ -37,6 +37,10 @@ void AvrTxtUi::Exec(const Command &command) {
 		CommandSetDevice(command);
 		break;
 
+	case AVRCommandTable::GetCode:
+		CommandGetCode(command);
+		break;
+
 	case AVRCommandTable::GetSRAM:
 	case AVRCommandTable::GetEEPROM:
 	case AVRCommandTable::GetFLASH:
@@ -117,7 +121,25 @@ void AvrTxtUi::CommandSetDevice(const Command &command) {
 	state = boost::shared_ptr<StateTxtWindow>
 			(new StateTxtWindow(avr_device->State_()));
 
+	code = boost::shared_ptr<CodeTxtWindow>
+			(new CodeTxtWindow(avr_device->Code_()));
+
 	std::cout << "] device loaded: " << avr_device->Name() << std::endl;
+}
+
+
+void AvrTxtUi::CommandGetCode(const Command &command) {
+	if (!DeviceLoaded())
+		return;
+
+	// there are 2 bytes per instruction (flash) address
+	uint32_t start_addr = command.GetNumber(1) * 2;
+	uint32_t end_addr = start_addr + 0x1F * 2;
+	if (command.IsValid(2))
+		end_addr = command.GetNumber(2) * 2;
+
+	// add 1 so that the end addr becomes the last byte of an instruction word
+	code->Disassemble(start_addr, end_addr+1);
 }
 
 

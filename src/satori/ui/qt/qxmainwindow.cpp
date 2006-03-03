@@ -6,9 +6,6 @@
 #include <boost/shared_ptr.hpp>
 #include "qxmainwindow.h"
 #include "satori/ui/qt/qtui.h"
-#include "widgets/qxmemory.h"
-#include "../../memory.h"
-#include "../../commandengine.h"
 
 
 QxMainWindow::QxMainWindow(QWidget *parent) : QMainWindow(parent) {
@@ -54,18 +51,18 @@ void QxMainWindow::About() {
 
 
 void QxMainWindow::Test() {
-	uint32_t start_addr;
-	uint32_t end_addr;
-	boost::shared_ptr<Memory> memory;
+	//uint32_t start_addr;
+	//uint32_t end_addr;
+	//boost::shared_ptr<Memory> memory;
 
-	start_addr = 0x60;
-	end_addr = 0x25F;
-	boost::shared_ptr<CommandEngine> command_engine(new CommandEngine);
-	memory = boost::shared_ptr<Memory>(new Memory(Memory::SRAM, start_addr,
-												end_addr, command_engine));
-	QxMemory *sram = new QxMemory(memory, this);
+	//start_addr = 0x60;
+	//end_addr = 0x25F;
+	//boost::shared_ptr<CommandEngine> command_engine(new CommandEngine);
+	//memory = boost::shared_ptr<Memory>(new Memory(Memory::SRAM, start_addr,
+	//											end_addr, command_engine));
+	//QxMemory *sram = new QxMemory(memory, this);
 
-	setCentralWidget(sram);
+	//setCentralWidget(sram);
 }
 
 

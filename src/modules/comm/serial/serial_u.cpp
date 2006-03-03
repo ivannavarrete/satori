@@ -315,8 +315,24 @@ void Serial::SetStopBits(const unsigned int stop_bits) {
  */
 void Serial::SetMode(struct termios &new_mode) {
 	// set default mode parameters
-	// disable implementation defined output processing
-	// new_mode.c_oflag &= ~OPOST;
+	new_mode.c_iflag &= ~IGNBRK; // don't ignore break condition on input
+	new_mode.c_iflag &= ~BRKINT; // don't send SIGINT on break condition
+	new_mode.c_iflag &= ~PARMRK; // if prt/frm check off & err => read null byte
+	new_mode.c_iflag &= ~ISTRIP; // don't strip off eight bit
+	new_mode.c_iflag &= ~INLCR;  // don't translate NL to CR on input
+	new_mode.c_iflag &= ~IGNCR;  // don't ignore carriage return on input
+	new_mode.c_iflag &= ~ICRNL;  // don't translace CR to NL on input
+	new_mode.c_iflag &= ~IXON;   // disable XON/XOFF flow control on output
+
+	new_mode.c_oflag &= ~OPOST;  // disable implementation defined output procc.
+
+	new_mode.c_lflag &= ~ECHO;
+	new_mode.c_lflag &= ~ECHONL;
+	new_mode.c_lflag &= ~ICANON;
+	new_mode.c_lflag &= ~ISIG;
+	new_mode.c_lflag &= ~IEXTEN;
+
+	new_mode.c_cflag &= ~PARENB; // disable parity generation / checking
 	
 	// set mode
 	if (tcsetattr(dev, TCSADRAIN, &new_mode))
@@ -356,7 +372,8 @@ bool Serial::Save() {
 bool Serial::Restore() {
 	// restore device mode
 	struct termios tmp_mode;
-	if (tcsetattr(dev, TCSAFLUSH, &saved_mode) < 0)
+	//if (tcsetattr(dev, TCSAFLUSH, &saved_mode) < 0)
+	if (tcsetattr(dev, TCSADRAIN, &saved_mode) < 0)
 		return false;
 
 	if (tcgetattr(dev, &tmp_mode) < 0)
