@@ -26,13 +26,11 @@ win32:QMAKE_CLEAN += $${DESTDIR}/avrtxt.dll
 # Architecture-dependent device classes
 HEADERS += $${MODULEROOT}/avrdevice.h \
            $${MODULEROOT}/avrdeviceinfo.h \
-           $${MODULEROOT}/avrdisasmengine.h \
-           $${MODULEROOT}/opcodetable.h
+           $${MODULEROOT}/avrdisasmengine.h
 
 SOURCES += $${MODULEROOT}/avrdevice.cpp \
            $${MODULEROOT}/avrdeviceinfo.cpp \
-           $${MODULEROOT}/avrdisasmengine.cpp \
-           $${MODULEROOT}/opcodetable.cpp
+           $${MODULEROOT}/avrdisasmengine.cpp
 
 
 # Architecture-independent device classes
