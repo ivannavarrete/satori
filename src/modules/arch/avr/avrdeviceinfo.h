@@ -35,8 +35,9 @@
 class AvrDeviceInfo {
 public:
 	AvrDeviceInfo(const std::string &device_name);
-	void Memory_(Memory::Type mtype, uint32_t *start_addr, uint32_t *end_addr);
-	void StateMap(std::vector<StateEntry> *state_map);
+	void Memory_(Memory::Type mtype, uint32_t *start_addr,
+								uint32_t *end_addr) const;
+	void StateMap(std::vector<StateEntry> *state_map) const;
 
 private:
 	void ParseDeviceFile(const QString &device_name);

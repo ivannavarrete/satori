@@ -8,11 +8,10 @@
 #include "avrcommandtable.h"
 #include "../../avrdevice.h"
 #include "lib/command/command.h"
-#include "satori/commandengine.h"
 #include "satori/ui/txt/txtui.h"
 #include "satori/ui/txt/memorytxtwindow.h"
 #include "satori/ui/txt/statetxtwindow.h"
-#include "satori/ui/txt/codetxtwindow.h"
+#include "avrcodetxtwindow.h"
 #include "modules/comm/commuser.h"
 
 

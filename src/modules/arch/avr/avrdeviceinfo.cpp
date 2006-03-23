@@ -37,7 +37,7 @@ AvrDeviceInfo::AvrDeviceInfo(const std::string &device_name) {
  * 
  * @Todo Change to another (custom, XML) exception.
  */
-void AvrDeviceInfo::Memory_(Memory::Type mtype, uint32_t *start_addr, uint32_t *end_addr) {
+void AvrDeviceInfo::Memory_(Memory::Type mtype, uint32_t *start_addr, uint32_t *end_addr) const {
 	QString memory_name;
 
 	switch (mtype) {
@@ -82,7 +82,7 @@ void AvrDeviceInfo::Memory_(Memory::Type mtype, uint32_t *start_addr, uint32_t *
  * 
  * @Todo Change to another (custom, XML) exception.
  */
-void AvrDeviceInfo::StateMap(std::vector<StateEntry> *state_map) {
+void AvrDeviceInfo::StateMap(std::vector<StateEntry> *state_map) const {
 	// Todo: Figure out whether we want to cheat (not read XML file), or
 	// if we should keep the state map in every device file. The advantage
 	// of creating a hardcoded state map is that the information is not needed

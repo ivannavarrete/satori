@@ -38,30 +38,32 @@ HEADERS += $${SOURCEROOT}/satori/code.h \
            $${SOURCEROOT}/satori/memory.h \
            $${SOURCEROOT}/satori/state.h \
            $${SOURCEROOT}/satori/commandengine.h \
-		   $${SOURCEROOT}/satori/packet.h \
-		   $${SOURCEROOT}/satori/disasmengine.h \
-		   $${SOURCEROOT}/satori/dinstruction.h
+           $${SOURCEROOT}/satori/packet.h \
+           $${SOURCEROOT}/satori/disasmengine.h \
+           $${SOURCEROOT}/satori/instruction.h
 
 SOURCES += $${SOURCEROOT}/satori/code.cpp \
            $${SOURCEROOT}/satori/memory.cpp \
            $${SOURCEROOT}/satori/state.cpp \
            $${SOURCEROOT}/satori/commandengine.cpp \
-		   $${SOURCEROOT}/satori/packet.cpp
+           $${SOURCEROOT}/satori/packet.cpp
 
 
 # Architecture-dependent UI classes
 HEADERS += $${MODULEROOT}/ui/txt/avrtxtui.h \
-           $${MODULEROOT}/ui/txt/avrcommandtable.h
+           $${MODULEROOT}/ui/txt/avrcommandtable.h \
+           $${MODULEROOT}/ui/txt/avrcodetxtwindow.h
 
 SOURCES += $${MODULEROOT}/ui/txt/avrtxtui.cpp \
-           $${MODULEROOT}/ui/txt/avrcommandtable.cpp
+           $${MODULEROOT}/ui/txt/avrcommandtable.cpp \
+           $${MODULEROOT}/ui/txt/avrcodetxtwindow.cpp
 
 
 # Architecture-independent UI classes
 HEADERS += $${SOURCEROOT}/satori/ui/txt/txtui.h \
            $${SOURCEROOT}/satori/ui/txt/codetxtwindow.h \
            $${SOURCEROOT}/satori/ui/txt/memorytxtwindow.h \
-		   $${SOURCEROOT}/satori/ui/txt/statetxtwindow.h
+           $${SOURCEROOT}/satori/ui/txt/statetxtwindow.h
 
 SOURCES += $${SOURCEROOT}/satori/ui/txt/codetxtwindow.cpp \
            $${SOURCEROOT}/satori/ui/txt/memorytxtwindow.cpp \

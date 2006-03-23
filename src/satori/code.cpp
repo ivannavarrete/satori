@@ -23,21 +23,23 @@ Code::Code(boost::shared_ptr<Memory> memory, boost::shared_ptr<DisasmEngine> dis
  *
  * @return						A list of disassembled instruction objects.
  */
-const DInstruction::List &Code::Disassemble(uint32_t start_addr, uint32_t end_addr) {
-	disasm_list.clear();
+const Instruction::List &Code::Disassemble(uint32_t start_addr, uint32_t end_addr) {
+	instruction_list.clear();
 
 	// check arguments for correctness
 	if ((start_addr > end_addr) ||
 		(start_addr > memory->End()) ||
 		(end_addr < memory->Start()))
-		return disasm_list;
+		return instruction_list;
 
 	start_addr = std::max(start_addr, memory->Start());
 	end_addr = std::min(end_addr, memory->End());
 
 	// the data buffer should at least be large enough to hold the largest
-	// instruction, otherwise those instructions that don't fit would become
-	// undisassembleable(?)
+	// instruction in any architecture, otherwise those instructions that
+	// don't fit would become undisassembleable (sp?)
+	//
+	// @Todo: Do not use a hardcoded value.
 	uint32_t DATA_BUF_SIZE  = 0x4000;		// 16k
 	char data[DATA_BUF_SIZE];
 
@@ -50,7 +52,7 @@ const DInstruction::List &Code::Disassemble(uint32_t start_addr, uint32_t end_ad
 		
 		memory->Read(addr, addr+chunk_size, data);
 		chunk_size = disasm_engine->Disassemble(data, chunk_size, addr,
-														&disasm_list);
+													&instruction_list);
 
 		if (chunk_size == 0)
 			break;
@@ -59,5 +61,5 @@ const DInstruction::List &Code::Disassemble(uint32_t start_addr, uint32_t end_ad
 		addr += chunk_size;
 	}
 
-	return disasm_list;
+	return instruction_list;
 }

@@ -1,7 +1,6 @@
 
 #include <iostream>
 #include "avrtxtui.h"
-#include "../../avrdevice.h"
 
 
 /**
@@ -92,6 +91,7 @@ void AvrTxtUi::CommandGetDevice() const {
 void AvrTxtUi::CommandSetDevice(const Command &command) {
 	// create a new device
 	try {
+		// do we really need the intermediate new_device variable?
 		boost::shared_ptr<AvrDevice> new_device
 				(new AvrDevice(command.GetWord(1)));
 		avr_device = new_device;
@@ -122,7 +122,7 @@ void AvrTxtUi::CommandSetDevice(const Command &command) {
 			(new StateTxtWindow(avr_device->State_()));
 
 	code = boost::shared_ptr<CodeTxtWindow>
-			(new CodeTxtWindow(avr_device->Code_()));
+			(new AvrCodeTxtWindow(avr_device->Code_()));
 
 	std::cout << "] device loaded: " << avr_device->Name() << std::endl;
 }
@@ -220,6 +220,8 @@ void AvrTxtUi::CommandGetState(const Command & /* command */) {
 void AvrTxtUi::CommandSetState(const Command & /* command */) {
 	if (!DeviceLoaded())
 		return;
+
+	std::cout << "] Not implemented" << std::endl;
 }
 
 
