@@ -1,6 +1,7 @@
 
 #include <iostream>
 #include "avrtxtui.h"
+#include "satori/ui/txt/color.h"
 
 
 /**
@@ -27,6 +28,8 @@ bool AvrTxtUi::Find(Command &command, const std::string &command_name) const {
  *
  */
 void AvrTxtUi::Exec(const Command &command) {
+	Color::Init256();				// Todo: Move to proper location
+
 	switch (command.Type()) {
 	case AVRCommandTable::GetDevice:
 		CommandGetDevice();
@@ -78,7 +81,7 @@ void AvrTxtUi::CommandGetDevice() const {
 	if (!DeviceLoaded())
 		return;
 
-	std::cout << "] device: " << avr_device->Name() << std::endl;
+	Message("device: " + avr_device->Name());
 }
 
 
@@ -96,8 +99,8 @@ void AvrTxtUi::CommandSetDevice(const Command &command) {
 				(new AvrDevice(command.GetWord(1)));
 		avr_device = new_device;
 	} catch (std::runtime_error &e) {
-		std::cout << "] failed loading device [" << command.GetWord(1) <<
-					 "]: " << e.what() << std::endl;
+		Error(std::string("failed loading device [") + command.GetWord(1) +
+			  std::string("]: ") + e.what());
 		return;
 	}
 
@@ -124,7 +127,7 @@ void AvrTxtUi::CommandSetDevice(const Command &command) {
 	code = boost::shared_ptr<CodeTxtWindow>
 			(new AvrCodeTxtWindow(avr_device->Code_()));
 
-	std::cout << "] device loaded: " << avr_device->Name() << std::endl;
+	Message("device loaded: " + avr_device->Name());
 }
 
 
@@ -156,13 +159,13 @@ void AvrTxtUi::CommandGetMemory(const Command &command) {
 		end_addr = command.GetNumber(2);
 	
 	if (command.Type() == AVRCommandTable::GetSRAM) {
-		std::cout << "] --[ sram ]--\n";
+		Message("--[ sram ]--");
 		sram->Read(start_addr, end_addr);
 	} else if (command.Type() == AVRCommandTable::GetEEPROM) {
-		std::cout << "] --[ eeprom ]--\n";
+		Message("--[ eeprom ]--");
 		eeprom->Read(start_addr, end_addr);
 	} else if (command.Type() == AVRCommandTable::GetFLASH) {
-		std::cout << "] --[ flash ]--\n";
+		Message("--[ flash ]--");
 		flash->Read(start_addr, end_addr);
 	}
 }
@@ -221,7 +224,7 @@ void AvrTxtUi::CommandSetState(const Command & /* command */) {
 	if (!DeviceLoaded())
 		return;
 
-	std::cout << "] Not implemented" << std::endl;
+	Error("Not implemented");
 }
 
 
@@ -235,15 +238,15 @@ void AvrTxtUi::CommandHelp(const Command &command) const {
 	if (command.IsValid(1)) {
 		Command help_command("null_command");
 		if (Find(help_command, command.GetWord(1)))
-			std::cout << help_command.LongDescription();
+			Message(help_command.LongDescription());
 	// display brief help on all commands
 	} else {
-		std::cout << "] --[ AVR architecture commands ]--\n";
+		Message("--[ AVR architecture commands ]--");
 
 		for (CommandTable::const_command_iterator command_i =
 			 command_table.begin(); command_i != command_table.end();
 			 ++command_i) {
-			std::cout << (*command_i)->ShortDescription();
+			Message((*command_i)->ShortDescription());
 		}
 	}
 }
@@ -257,11 +260,26 @@ void AvrTxtUi::CommandHelp(const Command &command) const {
  */
 bool AvrTxtUi::DeviceLoaded() const {
 	if (!avr_device) {
-		std::cout << "] no device loaded" << std::endl;
+		Error("no device loaded");
 		return false;
 	}
 
 	return true;
+}
+
+
+void AvrTxtUi::Message(const std::string &message) const {
+	std::cout << Color::Prompt << "] " << Color::Headline << message<<std::endl;
+}
+
+
+/**
+ * Display an error message.
+ *
+ * @param reason				description of error
+ */
+void AvrTxtUi::Error(const std::string &reason) const {
+	std::cout << Color::Prompt << "] " << Color::Error << reason << std::endl;
 }
 
 

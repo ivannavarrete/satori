@@ -14,21 +14,21 @@ BaseCommandTable::BaseCommandTable() {
 
 	// quit
 	command = boost::shared_ptr<Command>(new Command("quit", Quit,
-"]   quit                                  terminate program\n",
-"]   quit                                  terminate program\n"));
+  "  quit                                  terminate program",
+  "  quit                                  terminate program"));
 	command_table.push_back(command);
 
 	// cls
 	command = boost::shared_ptr<Command>(new Command("cls", ClearScreen,
-"]   cls                                   clear screen\n",
-"]   cls                                   clear screen\n"));
+  "  cls                                   clear screen",
+  "  cls                                   clear screen"));
 	command_table.push_back(command);
 
 	// help [command]
 	command = boost::shared_ptr<Command>(new Command("help", Help,
-"]   help [command]                        display help\n",
-"]   help                                  display brief help on all commands\n"
-"]   help <command>                        display detailed help on <command>\n"));
+  "  help [command]                        display help",
+  "  help                                  display brief help on all commands\n"
+  "]   help <command>                        display detailed help on <command>"));
 	argument_list.clear();
 	argument_list.push_back(boost::shared_ptr<Argument>(new WordArgument(
 													Argument::Optional)));
@@ -37,9 +37,9 @@ BaseCommandTable::BaseCommandTable() {
 
 	// module [module name]
 	command = boost::shared_ptr<Command>(new Command("module", ShowModule,
-"]   module [module_name]                  show/load modules\n",
-"]   module                                show available modules\n"
-"]   module <module_name>                  load module <module_name>\n"));
+  "  module [module_name]                  show/load modules",
+  "  module                                show available modules\n"
+"]   module <module_name>                  load module <module_name>"));
 	argument_list.clear();
 	argument_list.push_back(boost::shared_ptr<Argument>(new WordArgument(
 										Argument::Optional, LoadModule)));

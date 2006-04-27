@@ -3,17 +3,21 @@
 #include <QDir>
 #include <iostream>
 #include "basetxtui.h"
+#include "color.h"
 
 
 /**
  * This is the command loop that reads and executes user commands.
  */
 void BaseTxtUi::Idle() {
-	std::cout << "] Satori version 0.2\n] Welcome\n]\n";
+	Message("Satori version 0.2.0");
+	Message("Welcome");
+	Message();
 
 	while (true) {
 		// get user input
-		std::cout << ": ";
+		std::cout << Color::Prompt << ": " << Color::Default;
+
 		std::string command_line;
 		getline(std::cin, command_line);
 		boost::tokenizer<> tokens(command_line);
@@ -60,13 +64,13 @@ void BaseTxtUi::Idle() {
 		} catch (std::invalid_argument e) {
 			SyntaxError(e.what());
 		} catch (std::bad_cast e) {
-			std::cout << "bad_cast exception: " << e.what() << std::endl;
+			Error(std::string("bad_cast exception: ") + e.what());
 			exit(1);
 		} catch (std::logic_error e) {
-			std::cout << "logic_error exception: " << e.what() << std::endl;
+			Error(std::string("logic_error exception: ") + e.what());
 			exit(1);
 		} catch (...) {
-			std::cout << "unhandled exception" << std::endl;
+			Error("unhandled exception");
 			exit(1);
 		}
 	}
@@ -122,9 +126,9 @@ void BaseTxtUi::CommandQuit() const {
  *
  */
 void BaseTxtUi::CommandShowModule() const {
-	QDir module_dir = QDir(QCoreApplication::applicationDirPath()+"/../modules");
+	QDir module_dir =QDir(QCoreApplication::applicationDirPath()+"/../modules");
 	if (!module_dir.exists()) {
-		std::cout << "] can't find module directory\n";
+		Error("can't find module directory");
 		return;
 	}
 
@@ -135,7 +139,8 @@ void BaseTxtUi::CommandShowModule() const {
 
 	// display all working architecture modules
 	if (module_dir.cd(tr("arch"))) {
-		std::cout << "] --[ Architecture modules ]--\n";
+		Message("--[ Architecture modules ]--");
+
 		foreach (QString module_name, module_dir.entryList(QDir::Dirs)) {
 			QPluginLoader loader(module_dir.absoluteFilePath(
 						module_name+"/lib"+module_name+"txt.so"));
@@ -144,17 +149,17 @@ void BaseTxtUi::CommandShowModule() const {
 				TxtUi *ui_if = qobject_cast<TxtUi *>(module);
 				CommUser *commuser_if = qobject_cast<CommUser *>(module);
 				if (ui_if && commuser_if)
-					std::cout << "]   " << module_name.toStdString() << "\n";
+					Message(module_name.toStdString());
 
 				if (!loader.unload())
-					std::cout << "can't unload module\n";
+					Error("can't unload module");
 			}
 		}
 	}
 
 	// display all working communication modules
 	if (module_dir.cd(tr("../comm"))) {
-		std::cout << "] --[ Communication modules ]--\n";
+		Message("--[ Communication modules ]--");
 		foreach (QString module_name, module_dir.entryList(QDir::Dirs)) {
 			QPluginLoader loader(module_dir.absoluteFilePath(
 						module_name+"/lib"+module_name+".so"));
@@ -163,10 +168,10 @@ void BaseTxtUi::CommandShowModule() const {
 				TxtUi *ui_if = qobject_cast<TxtUi *>(module);
 				CommProvider *commprov_if = qobject_cast<CommProvider*>(module);
 				if (ui_if && commprov_if)
-					std::cout << "]   " << module_name.toStdString() << "\n";
+					Message(module_name.toStdString());
 
 				if (!loader.unload())
-					std::cout << "can't unload module\n";
+					Error("can't unload module");
 			}
 		}
 	}
@@ -178,7 +183,10 @@ void BaseTxtUi::CommandShowModule() const {
  *
  * @param command				Command object holding module name
  *
- * @todo Find out exceptions thrown.
+ * @Todo: Find out exceptions thrown.
+ *
+ * @Todo: Find out what happens if there are a comm and arch module with the
+ * 		  same name
  */
 void BaseTxtUi::CommandLoadModule(const Command &command) {
 	const QString module_name(command.GetWord(1).c_str());
@@ -187,7 +195,7 @@ void BaseTxtUi::CommandLoadModule(const Command &command) {
 	// try loading an architecture module
 	QDir modules_dir(QCoreApplication::applicationDirPath()+"/../modules/arch");
 	if (!modules_dir.exists()) {
-		std::cout << "] can't find module directory\n";
+		Error("can't find module directory");
 		return;
 	}
 
@@ -205,8 +213,8 @@ void BaseTxtUi::CommandLoadModule(const Command &command) {
 				comm_user = qobject_cast<CommUser *>(module);
 				if (arch_ui && comm_user) {
 					loaded = true;
-					std::cout << "] architecture module loaded: "
-						 	  << module_name.toStdString() << "\n";
+					Message("architecture module loaded: " +
+									module_name.toStdString());
 
 					// if a comm module is already loaded then we get it's Comm
 					// object and pass it to the newly loaded arch module
@@ -225,7 +233,7 @@ void BaseTxtUi::CommandLoadModule(const Command &command) {
 	modules_dir.setPath(QCoreApplication::applicationDirPath()+
 											"/../modules/comm");
 	if (!modules_dir.exists()) {
-		std::cout << "] can't find module directory\n";
+		Error("can't find module directory");
 		return;
 	}
 
@@ -244,8 +252,8 @@ void BaseTxtUi::CommandLoadModule(const Command &command) {
 				
 				if (comm_ui && comm_provider) {
 					loaded = true;
-					std::cout << "] communication module loaded: "
-							  << module_name.toStdString() << "\n";
+					Message("communication module loaded: " +
+									module_name.toStdString());
 
 					// if an arch module is already loaded then we set it's Comm
 					// object with the one from the newly loaded comm module
@@ -260,8 +268,8 @@ void BaseTxtUi::CommandLoadModule(const Command &command) {
 	}
 
 	if (!loaded)
-		std::cout << "] failed loading module [" << command.GetWord(1)
-				  << "]: module not found" << std::endl;
+		Error("failed loading module [" + command.GetWord(1) +
+										"]: module not found");
 }
 
 
@@ -272,7 +280,8 @@ void BaseTxtUi::CommandLoadModule(const Command &command) {
  * for more precise screen clearing.
  */
 void BaseTxtUi::CommandClearScreen() const {
-	std::cout << "]\n]\n]\n]\n]\n]\n]\n]\n]\n]\n]\n]\n]\n]\n]\n]\n]\n"
+	std::cout << Color::Prompt
+			  << "]\n]\n]\n]\n]\n]\n]\n]\n]\n]\n]\n]\n]\n]\n]\n]\n]\n"
 				 "]\n]\n]\n]\n]\n]\n]\n]\n]\n]\n]\n]\n]\n]\n]\n]\n]\n"
 				 "]\n]\n]\n]\n]\n]\n]\n]\n]\n]\n]\n]\n]\n]\n]\n]\n]\n";
 }
@@ -282,30 +291,39 @@ void BaseTxtUi::CommandClearScreen() const {
  * Display help.
  *
  * @param command				Command object holding optional command name
+ *
+ * @Todo: Potential problem with colors when displaying long description of
+ * 		  commands. The same problem also exists in the help methods for the
+ * 		  other modules. The problem is that long descriptions are multiline
+ * 		  and currently embed the command prompt at linebreak. This will
+ * 		  make it the same color as the help text even if the prompt color
+ * 		  is changed in the Color class.
  */
 void BaseTxtUi::CommandHelp(const Command &command) const {
 	// display long help on specific command
 	if (command.IsValid(1)) {
 		Command help_command("null_command");
 		if (Find(help_command, command.GetWord(1)))
-			std::cout << help_command.LongDescription();
+			Message(help_command.LongDescription());
 		else {
-			// display error only if command wasn't found in any subsystem
-			if ((!arch_ui && !comm_ui) ||
-				(arch_ui && !arch_ui->Find(help_command, command.GetWord(1))) ||
-				(comm_ui && !comm_ui->Find(help_command, command.GetWord(1)))) {
-				std::cout << "] command not found\n";
+			/* since the command wasn't found here, check the other subsystems;
+			 * if not found there either, display error message */
+			if (arch_ui && arch_ui->Find(help_command, command.GetWord(1)) ||
+				comm_ui && comm_ui->Find(help_command, command.GetWord(1))) {
+				;
+			} else {
+				Error("command [" + command.GetWord(1) + "] not found");
 			}
 		}
 
 	// display brief help on all commands
 	} else {
-		std::cout << "] --[ General commands ]--\n";
-
+		Message("--[ General commands ]--");
+		
 		for (CommandTable::const_command_iterator command_i =
 			 command_table.begin(); command_i != command_table.end();
 			 ++command_i) {
-			std::cout << (*command_i)->ShortDescription();
+			Message((*command_i)->ShortDescription());
 		}
 	}
 }
@@ -316,15 +334,34 @@ void BaseTxtUi::CommandHelp(const Command &command) const {
  * implemented.
  */
 void BaseTxtUi::CommandUnknown() const {
-	std::cout << "] unimplemented command" << std::endl;
+	Error("unimplemented command");
+}
+
+
+/**
+ * Display message.
+ */
+void BaseTxtUi::Message(const std::string &message) const {
+	std::cout << Color::Prompt << "] " << Color::Headline << message<<std::endl;
 }
 
 
 /**
  * Display a syntax error message.
  *
- * @param reason				short description of error
+ * @param reason				description of error
  */
 void BaseTxtUi::SyntaxError(const std::string &reason) const {
-	std::cout << "] syntax error: " << reason << std::endl;
+	std::cout << Color::Prompt << "] "
+			  << Color::Error << "syntax error: " << reason << std::endl;
+}
+
+
+/**
+ * Display an error message.
+ *
+ * @param reason				description of error
+ */
+void BaseTxtUi::Error(const std::string &reason) const {
+	std::cout << Color::Prompt << "] " << Color::Error << reason << std::endl;
 }

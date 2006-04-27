@@ -13,7 +13,10 @@ all: $(OBJFILES)
 
 %.hex: %.asm
 	$(AS) $<
-	$(LOADER)$@
+	#$(LOADER)$@
+
+program: all
+	$(LOADER)monitor.hex
 
 clean: distclean
 distclean:

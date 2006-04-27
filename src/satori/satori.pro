@@ -22,11 +22,13 @@ SOURCES += main.cpp
 HEADERS += ui/txt/txtmain.h \
            ui/txt/txtui.h \
            ui/txt/basetxtui.h \
-           ui/txt/basecommandtable.h
+           ui/txt/basecommandtable.h \
+           ui/txt/color.h
 
 SOURCES += ui/txt/txtmain.cpp \
            ui/txt/basetxtui.cpp \
-           ui/txt/basecommandtable.cpp
+           ui/txt/basecommandtable.cpp \
+           ui/txt/color.cpp
 
 
 # Architecture-independent Qt user interface

@@ -1,12 +1,15 @@
 
 #include <iostream>
 #include "serialtxtui.h"
+#include "satori/ui/txt/color.h"
 
 
 /**
  *
  */
 SerialTxtUI::SerialTxtUI() {
+	Color::Init256();
+
 	// @todo Remove this. Have the Serial created and modified with a 'set'
 	// 		 command instead.
 	serial = boost::shared_ptr<Serial>(new Serial("/dev/ttyS1"));
@@ -59,10 +62,10 @@ void SerialTxtUI::CommandSet(const Command &command) {
 	// then display all serial variables
 	if (command.ArgumentCount() == 0 ||
 		(command.ArgumentCount() == 1 && command.GetWord(1) == "serial")) {
-		std::cout << "] --[ Serial variables ]--\n"
-				  << "]  baud: " << serial->Baud() << "\n"
-				  << "]  data_bits: " << serial->DataBits() << "\n"
-				  << "]  stop_bits: " << serial->StopBits() << std::endl;
+		Message("--[ Serial variables ]--");
+		Message("  baud: " + serial->Baud());
+		Message("  data_bits: " + serial->DataBits());
+		Message("  stop_bits: " + serial->StopBits());
 
 	// else if 'set' is called with two arguments and first is equal to 'serial'
 	// then we set a serial variable
@@ -74,7 +77,7 @@ void SerialTxtUI::CommandSet(const Command &command) {
 		// ...
 
 		// temporary..
-		std::cout << "set serial var...\n";
+		Message("set serial var...");
 		serial->SetBaud(9600);
 		serial->SetDataBits(8);
 		serial->SetStopBits(1);
@@ -92,17 +95,32 @@ void SerialTxtUI::CommandHelp(const Command &command) const {
 	if (command.IsValid(1)) {
 		Command help_command("null_command");
 		if (Find(help_command, command.GetWord(1)))
-			std::cout << help_command.LongDescription();
+			Message(help_command.LongDescription());
 	// display brief help on all commands
 	} else {
-		std::cout << "] --[ Serial communication commands ]--\n";
+		Message("--[ Serial communication commands ]--");
 
 		for (CommandTable::const_command_iterator command_i =
 			 command_table.begin(); command_i != command_table.end();
 			 ++command_i) {
-			std::cout << (*command_i)->ShortDescription();
+			Message((*command_i)->ShortDescription());
 		}
 	}
+}
+
+
+void SerialTxtUI::Message(const std::string &message) const {
+	std::cout << Color::Prompt << "] " << Color::Headline << message<<std::endl;
+}
+
+
+/**
+ * Display an error message.
+ *
+ * @param reason				description of error
+ */
+void SerialTxtUI::Error(const std::string &reason) const {
+	std::cout << Color::Prompt << "] " << Color::Error << reason << std::endl;
 }
 
 

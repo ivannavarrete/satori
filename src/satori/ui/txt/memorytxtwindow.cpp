@@ -3,6 +3,7 @@
 #include <iomanip>
 #include <algorithm>
 #include "memorytxtwindow.h"
+#include "color.h"
 
 
 /**
@@ -94,11 +95,13 @@ void MemoryTxtWindow::Show(uint32_t start_addr, uint32_t end_addr, unsigned char
 	// display data
 	for (uint32_t r=0; r<data_size; r+=0x10) {
 		// address
-		std::cout << ": " << std::setw(4) <<  start_addr + r << "  ";
+		std::cout << Color::Prompt << "] "
+				  << Color::Address << std::setw(4) <<  start_addr + r << "  ";
 								        
 		// hex data
+		std::cout << Color::HexData;
 		for (uint32_t c=0; c<0x10 && c<data_size-r; c++)
-			std::cout << std::setw(2) << (unsigned int)(data[r+c])
+			std::cout << std::setw(2) << static_cast<unsigned int>(data[r+c])
 					  << ((c==7) ? "  " : " ");
 										        
 		// align pointer for ascii output
@@ -109,6 +112,7 @@ void MemoryTxtWindow::Show(uint32_t start_addr, uint32_t end_addr, unsigned char
 		std::cout << "   ";
 
 		// ascii data
+		std::cout << Color::AsciiData;
 		for (uint32_t c=0; c<0x10 && c<data_size-r; c++)
 			std::cout << (char)((data[r+c]>=0x20 && data[r+c]<=0x7E) ?
 													data[r+c] : '.');

@@ -41,6 +41,8 @@ private:
 	void CommandHelp(const Command &command) const;
 
 	bool DeviceLoaded() const;
+	void Message(const std::string &message="") const;
+	void Error(const std::string &reason) const;
 
 	AVRCommandTable command_table;
 

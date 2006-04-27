@@ -1,0 +1,35 @@
+
+===[ Requirements ]=============================================================
+
+	Qt4
+	Cppunit
+	AVR assembler (avra or similar)
+	AVR programmer software (avrdude or similar)
+	AVR programmer hardware (stk500 or similar)
+
+
+===[ Building ]=================================================================
+
+	qmake -config release
+	make
+
+Then program the monitor into an at90s8535, with avrdude or similar software:
+
+	cd src/modules/arch/avr/monitor/
+	avrdude -p 8535 -c stk500 -U flash:w:monitor.hex
+
+Adjust the -c parameter to whatever programmer you are using.
+
+
+===[ Running ]==================================================================
+
+Start the program
+
+	./release/bin/satori
+
+Load the proper modules and device
+
+	: module avr
+	: module serial
+	: device at90s8535
+	: help

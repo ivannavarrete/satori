@@ -42,7 +42,10 @@ private:
 	void CommandClearScreen() const;
 	void CommandHelp(const Command &command) const;
 	void CommandUnknown() const;
+	
+	void Message(const std::string &message="") const;
 	void SyntaxError(const std::string &reason="") const;
+	void Error(const std::string &reason) const;
 
 	BaseCommandTable command_table;
 

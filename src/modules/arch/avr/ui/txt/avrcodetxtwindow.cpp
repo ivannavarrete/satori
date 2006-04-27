@@ -3,6 +3,7 @@
 #include <iomanip>
 #include "avrcodetxtwindow.h"
 #include "../../avrinstruction.h"
+#include "satori/ui/txt/color.h"
 
 
 /*
@@ -22,17 +23,20 @@ void AvrCodeTxtWindow::Show(const Instruction::List &disasm_list) const {
 		const boost::shared_ptr<AvrInstruction> instruction = *i;
 		
 		// address
-		std::cout << "] ";
-		std::cout << std::setw(3) << std::setfill('0') << std::hex
+		std::cout << Color::Prompt << "] "
+				  << Color::Address
+				  << std::setw(3) << std::setfill('0') << std::hex
 				  << instruction->addr << "  ";
 
 		// machine code
+		std::cout << Color::MachineCode;
 		for (unsigned int i=0; i<instruction->size; i++)
 			std::cout << std::setw(2) << instruction->machine_code[i] << " ";
 
 		// mnemonic
-		std::cout << std::setw(14-instruction->size*3) <<std::setfill(' ')<<" ";
-		std::cout << instruction->mnemonic;
+		std::cout << Color::Mnemonic
+				  << std::setw(14-instruction->size*3) << std::setfill(' ')
+				  << " " << instruction->mnemonic;
 		
 		// operands
 		std::cout << std::setw(10-strlen(instruction->mnemonic))
@@ -46,9 +50,13 @@ void AvrCodeTxtWindow::Show(const Instruction::List &disasm_list) const {
 		case OP_R4_l:
 		case OP_R5:
 		case OP_R5_r:
-			std::cout << "r" << std::dec << instruction->operand1; break;
+			std::cout << Color::Register << "r"
+					  << std::dec << instruction->operand1;
+			break;
 		default:
-			std::cout << "$" << std::hex << instruction->operand1;
+			std::cout << Color::Number << "$"
+					  << std::hex << instruction->operand1;
+			break;
 		}
 
 		switch (instruction->operand2_type) {
@@ -59,9 +67,15 @@ void AvrCodeTxtWindow::Show(const Instruction::List &disasm_list) const {
 		case OP_R4_l:
 		case OP_R5:
 		case OP_R5_r:
-			std::cout << ", r" << std::dec << instruction->operand2; break;
+			std::cout << Color::Punctuation << ", "
+					  << Color::Register << "r"
+					  << std::dec << instruction->operand2;
+			break;
 		default:
-			std::cout << ", $" << std::hex << instruction->operand2;
+			std::cout << Color::Punctuation << ", "
+					  << Color::Number << "$"
+					  << std::hex << instruction->operand2;
+			break;
 		}
 
 		std::cout << std::endl;

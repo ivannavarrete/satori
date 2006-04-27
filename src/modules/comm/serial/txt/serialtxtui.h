@@ -31,6 +31,9 @@ private:
 	void CommandSet(const Command &command);
 	void CommandHelp(const Command &command) const;
 
+	void Message(const std::string &message="") const;
+	void Error(const std::string &reason) const;
+
 	SerialCommandTable command_table;
 	boost::shared_ptr<Serial> serial;
 };

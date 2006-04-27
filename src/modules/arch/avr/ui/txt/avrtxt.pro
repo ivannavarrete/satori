@@ -61,11 +61,13 @@ SOURCES += $${MODULEROOT}/ui/txt/avrtxtui.cpp \
 
 # Architecture-independent UI classes
 HEADERS += $${SOURCEROOT}/satori/ui/txt/txtui.h \
+           $${SOURCEROOT}/satori/ui/txt/color.h \
            $${SOURCEROOT}/satori/ui/txt/codetxtwindow.h \
            $${SOURCEROOT}/satori/ui/txt/memorytxtwindow.h \
            $${SOURCEROOT}/satori/ui/txt/statetxtwindow.h
 
-SOURCES += $${SOURCEROOT}/satori/ui/txt/codetxtwindow.cpp \
+SOURCES += $${SOURCEROOT}/satori/ui/txt/color.cpp \
+           $${SOURCEROOT}/satori/ui/txt/codetxtwindow.cpp \
            $${SOURCEROOT}/satori/ui/txt/memorytxtwindow.cpp \
            $${SOURCEROOT}/satori/ui/txt/statetxtwindow.cpp
 
